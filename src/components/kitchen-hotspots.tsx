@@ -20,8 +20,8 @@ export function KitchenHotspots({ image, alt, spots }: Props) {
 
   return (
     <div className="grid gap-8 lg:grid-cols-[1fr_22rem] lg:items-end">
-      <div className="relative overflow-hidden rounded-sm bg-char">
-        <div className="relative aspect-[3/2]">
+      <div data-clip className="relative overflow-hidden rounded-sm bg-char">
+        <div data-clip-inner data-pop-group className="relative aspect-[3/2]">
           <Image
             src={image}
             alt={alt}
@@ -39,15 +39,16 @@ export function KitchenHotspots({ image, alt, spots }: Props) {
                 onClick={() => setActive(s.id)}
                 aria-pressed={on}
                 aria-label={s.title}
+                data-pop
                 className="group absolute -translate-x-1/2 -translate-y-1/2"
                 style={{ left: `${s.x}%`, top: `${s.y}%` }}
               >
-                {!on && <span className="hotspot-ring absolute inset-0 rounded-full bg-ember/60" />}
+                {!on && <span className="hotspot-ring absolute inset-0 rounded-full bg-red/70" />}
                 <span
                   className={`relative flex size-7 items-center justify-center rounded-full border text-[0.7rem] font-semibold transition-all duration-300 sm:size-9 ${
                     on
-                      ? "scale-110 border-ember bg-ember text-ink"
-                      : "border-bone/80 bg-ink/60 text-bone backdrop-blur group-hover:bg-copper group-hover:text-ink"
+                      ? "scale-110 border-cream bg-red text-cream shadow-[0_0_0_6px_rgba(153,0,17,0.35)]"
+                      : "border-cream/80 bg-ink/60 text-cream backdrop-blur group-hover:border-red group-hover:bg-red"
                   }`}
                 >
                   {i + 1}
@@ -68,19 +69,29 @@ export function KitchenHotspots({ image, alt, spots }: Props) {
                   type="button"
                   onClick={() => setActive(s.id)}
                   aria-pressed={on}
-                  className={`flex w-full items-baseline gap-4 border-b py-3 text-left transition-colors ${
-                    on ? "border-copper text-bone" : "border-line/70 text-muted hover:text-sand"
+                  className={`group/item flex w-full items-baseline gap-4 border-b py-3 text-left transition-colors duration-300 ${
+                    on ? "border-red text-bone" : "border-line/70 text-muted hover:text-sand"
                   }`}
                 >
-                  <span className="eyebrow w-6 shrink-0 tabular-nums">{String(i + 1).padStart(2, "0")}</span>
-                  <span className="font-display text-xl">{s.title}</span>
+                  <span className={`eyebrow w-6 shrink-0 tabular-nums ${on ? "text-red-bright" : ""}`}>
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <span
+                    className={`font-display text-xl transition-transform duration-500 ease-[var(--ease-expo)] ${
+                      on ? "translate-x-2" : "group-hover/item:translate-x-1"
+                    }`}
+                  >
+                    {s.title}
+                  </span>
                 </button>
               </li>
             );
           })}
         </ol>
         <p aria-live="polite" className="mt-6 min-h-[4.5rem] text-[0.95rem] leading-relaxed text-sand/85">
-          {current?.body}
+          <span key={current?.id} className="block animate-[rise_0.7s_var(--ease-expo)_both]">
+            {current?.body}
+          </span>
         </p>
       </div>
     </div>

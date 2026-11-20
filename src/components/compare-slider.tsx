@@ -1,7 +1,9 @@
 "use client";
 
 import Image, { type StaticImageData } from "next/image";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+
+const easeInOut = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
 
 type Props = {
   before: StaticImageData;
@@ -16,8 +18,40 @@ export function CompareSlider({ before, after, beforeLabel, afterLabel, alt }: P
   const [pos, setPos] = useState(50);
   const frame = useRef<HTMLDivElement>(null);
   const dragging = useRef(false);
+  const touched = useRef(false);
+
+  // First time it scrolls into view, sweep from day to dusk so people see it moves.
+  useEffect(() => {
+    const el = frame.current;
+    if (!el || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const rect = el.getBoundingClientRect();
+    if (rect.top > window.innerHeight) setPos(97); // still off-screen: park it on "day"
+    else return;
+    let raf = 0;
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting || touched.current) return;
+        io.disconnect();
+        const start = performance.now();
+        const step = (now: number) => {
+          if (touched.current) return;
+          const t = Math.min(1, (now - start) / 2400);
+          setPos(97 - 47 * easeInOut(t));
+          if (t < 1) raf = requestAnimationFrame(step);
+        };
+        raf = requestAnimationFrame(step);
+      },
+      { threshold: 0.55 },
+    );
+    io.observe(el);
+    return () => {
+      io.disconnect();
+      cancelAnimationFrame(raf);
+    };
+  }, []);
 
   const moveTo = useCallback((clientX: number) => {
+    touched.current = true;
     const rect = frame.current?.getBoundingClientRect();
     if (!rect) return;
     const pct = ((clientX - rect.left) / rect.width) * 100;
@@ -68,7 +102,7 @@ export function CompareSlider({ before, after, beforeLabel, afterLabel, alt }: P
       </span>
 
       <div
-        className="pointer-events-none absolute inset-y-0 w-px bg-bone/90 shadow-[0_0_24px_rgba(240,181,107,0.6)]"
+        className="pointer-events-none absolute inset-y-0 w-0.5 -translate-x-1/2 bg-red shadow-[0_0_28px_rgba(153,0,17,0.9)]"
         style={{ left: `${pos}%` }}
       />
       <div
@@ -80,6 +114,7 @@ export function CompareSlider({ before, after, beforeLabel, afterLabel, alt }: P
         aria-valuenow={Math.round(pos)}
         aria-valuetext={`${Math.round(pos)}% ${beforeLabel.toLowerCase()}`}
         onKeyDown={(e) => {
+          touched.current = true;
           const step = e.shiftKey ? 10 : 4;
           if (e.key === "ArrowLeft" || e.key === "ArrowDown") setPos((p) => Math.max(0, p - step));
           else if (e.key === "ArrowRight" || e.key === "ArrowUp") setPos((p) => Math.min(100, p + step));
@@ -88,7 +123,7 @@ export function CompareSlider({ before, after, beforeLabel, afterLabel, alt }: P
           else return;
           e.preventDefault();
         }}
-        className="absolute top-1/2 flex size-14 -translate-x-1/2 -translate-y-1/2 cursor-ew-resize items-center justify-center rounded-full border border-bone/70 bg-ink/70 text-bone backdrop-blur-md transition-transform hover:scale-105"
+        className="absolute top-1/2 flex size-16 -translate-x-1/2 -translate-y-1/2 cursor-ew-resize items-center justify-center rounded-full bg-red text-cream shadow-[0_10px_40px_rgba(153,0,17,0.55)] transition-transform hover:scale-110"
         style={{ left: `${pos}%` }}
       >
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">

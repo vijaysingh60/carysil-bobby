@@ -1,12 +1,35 @@
-# Carysil Open Air × Bobby — campaign site
+# Live the Carysil Life × Bobby — campaign site
 
-Homepage and promo page for the Carysil **Open Air** outdoor kitchen campaign featuring Bobby.
-Built with Next.js 16 (App Router, Turbopack), React 19 and Tailwind CSS 4.
+Homepage and promo page for Carysil's **Live the Carysil Life** outdoor kitchen campaign featuring Bobby.
+Built with Next.js 16 (App Router, Turbopack), React 19, Tailwind CSS 4, GSAP 3 and Lenis.
 
-| Route    | What it is                                                                                     |
-| -------- | ---------------------------------------------------------------------------------------------- |
-| `/`      | Campaign homepage: Bobby hero, portraits, kitchen hotspots, day-to-night slider, offer band   |
-| `/promo` | Launch offer page: countdown, offer perks, Bobby feature, four moods, booking form, terms     |
+| Route    | What it is                                                                                                   |
+| -------- | ------------------------------------------------------------------------------------------------------------ |
+| `/`      | Hero, red marquee, scroll-lit statement, Bobby story (sticky portrait B&W → colour), kitchen hotspots, day-to-night slider, offer band |
+| `/promo` | Launch offer: countdown, perks, Bobby feature, four moods (pinned sideways scroll on desktop), booking form, terms |
+
+## Brand
+
+- **Carysil red `#990011`** (from the Carysil brand tokens) carries the nav bar, footer, buttons, marquee and
+  transitions. `red-bright` (`#e8424f`) is used only for small red text on dark backgrounds, for contrast.
+- **Logo:** the official international Carysil wordmark with the GERMAN ENGINEERED line, inlined as SVG in
+  [`src/components/carysil-logo.tsx`](src/components/carysil-logo.tsx) so it can be cream on red or red on light.
+
+## Motion
+
+| Effect | Where it lives |
+| ------ | -------------- |
+| Red intro curtain with the logo and campaign line (first page view per session) | `intro-curtain.tsx`, `.intro` in `globals.css` |
+| Red wipe on every page change | `app/template.tsx`, `.route-wipe` |
+| Hero words rising out of masks, slow image settle | `masked-words.tsx`, `.mask-word`, `.animate-settle` |
+| Smooth scrolling | `smooth-scroll.tsx` (Lenis on the GSAP ticker) |
+| Scroll effects declared with `data-*` attributes | `page-motion.tsx` (header comment lists them all) |
+| Day-to-night slider sweeps once on first view | `compare-slider.tsx` |
+
+The intro, hero and page wipe are pure CSS, so the page never waits on JavaScript. Everything respects
+`prefers-reduced-motion`: smooth scroll and scroll effects switch off and the intro is skipped.
+Next.js 16 keeps visited pages mounted but hidden, so `PageMotion` scopes itself to its page's `[data-page]`
+root and tears down when the page is hidden.
 
 ## Run it
 
@@ -21,8 +44,9 @@ Open http://localhost:3000. `npm run build` makes a production build; both pages
 
 All brand, campaign and offer text is in [`src/lib/site.ts`](src/lib/site.ts):
 
-- `site`: brand, campaign name, tagline, ambassador name, contact details, site URL
+- `site`: brand, campaign line ("Live the Carysil Life"), tagline, ambassador name, contact details, site URL
 - `offer`: offer title, **end date** (drives the countdown and "offer ended" state), perks and terms
+- `marquee`, `story`: the red running band and the three Bobby story beats
 - `kitchenSpots`: the numbered markers on the kitchen photo and their text (x/y are percent of the frame)
 
 **Before launch, replace the placeholders:** `site.url`, phone and email, the offer perks, end date and terms.

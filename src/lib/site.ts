@@ -1,22 +1,25 @@
 /**
  * Every piece of brand, campaign and offer copy lives here, so the pages
- * can be re-pointed at a different brand or offer without touching layout code.
+ * can be re-pointed without touching layout code.
  *
- * PLACEHOLDERS: the brand name, ambassador name, offer perks, dates and terms
- * below are drafts. Replace them with the approved campaign copy before launch.
+ * PLACEHOLDERS: contact details, site URL, offer perks, dates and terms
+ * are drafts. Replace them with the approved campaign copy before launch.
  */
 
 export const site = {
   brand: "Carysil",
-  campaign: "Open Air",
-  campaignLong: "The Open Air Collection",
+  brandTagline: "German Engineered",
+  /** Campaign line. Shown in the hero, intro, marquee and footer. */
+  campaign: "Live the Carysil Life",
+  campaignWords: ["Live the", "Carysil Life"],
+  collection: "The Outdoor Kitchen",
   tagline: "Cook where the evening begins.",
   description:
-    "Copper, stone and fire, built to live outside. An outdoor kitchen collection made for long evenings and longer tables.",
+    "Copper, stone and fire, built to live outside. Carysil's outdoor kitchen, with Bobby, for long evenings and longer tables.",
   url: "https://example.com",
   ambassador: {
     name: "Bobby",
-    role: "Campaign ambassador",
+    role: "The face of the campaign",
   },
   contact: {
     phone: "+91 00000 00000",
@@ -25,14 +28,14 @@ export const site = {
 } as const;
 
 export const offer = {
-  title: "The Open Air Launch Offer",
-  short: "Launch offer, for a limited period",
+  title: "The Carysil Life launch offer",
+  short: "Launch offer · Limited period",
   /** ISO date with offset. The countdown and "offer ended" state read this. */
   endsAt: "2026-12-31T23:59:59+05:30",
   perks: [
     {
       title: "Complimentary design visit",
-      body: "A designer measures your terrace, garden or courtyard and plans the layout with you.",
+      body: "A Carysil designer measures your terrace, garden or courtyard and plans the layout with you.",
     },
     {
       title: "Installation included",
@@ -57,6 +60,33 @@ export const nav = [
   { href: "/#collection", label: "The kitchen" },
   { href: "/#day-to-night", label: "Day to night" },
   { href: "/promo", label: "Launch offer" },
+] as const;
+
+/** Running line in the red marquee band. */
+export const marquee = [
+  "Live the Carysil Life",
+  "Featuring Bobby",
+  "German Engineered",
+  "The Outdoor Kitchen",
+] as const;
+
+/** Story beats beside the sticky portrait. The portrait turns from B&W to colour as they scroll by. */
+export const story = [
+  {
+    eyebrow: "The face of the campaign",
+    title: ["Bobby,", "at home outdoors."],
+    body: "Shot at golden hour on open farmland, the campaign follows Bobby through one long evening: from the last light on the fence rails to the first lights strung over the grill.",
+  },
+  {
+    eyebrow: "Golden hour",
+    title: ["The light turns gold.", "The stone holds the heat."],
+    body: "As the sun drops, the copper starts to glow and the kitchen takes over from the day. This is the hour the whole set-up was built for.",
+  },
+  {
+    eyebrow: "Live the Carysil Life",
+    title: ["Made to be lived in,", "not looked at."],
+    body: "German-engineered sinks, taps and built-in appliances, set into stone and timber, for evenings that run long.",
+  },
 ] as const;
 
 /** Numbered markers on the dusk kitchen photo (x/y are percent of the frame). */

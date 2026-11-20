@@ -50,10 +50,12 @@ export function Countdown({ endsAt }: { endsAt: string }) {
           className="min-w-[4.25rem] rounded-sm border border-bone/15 bg-ink/50 px-3 py-3 text-center backdrop-blur-md sm:min-w-[5.25rem]"
         >
           <span
-            className="font-display block text-3xl tabular-nums text-bone sm:text-4xl"
+            className="font-display block overflow-hidden text-3xl tabular-nums text-bone sm:text-4xl"
             aria-hidden={label === "Seconds"}
           >
-            {value === undefined ? "--" : String(value).padStart(2, "0")}
+            <span key={value ?? "x"} className={value === undefined ? "" : "tick"}>
+              {value === undefined ? "--" : String(value).padStart(2, "0")}
+            </span>
           </span>
           <span className="eyebrow mt-1 block text-[0.6rem] text-muted">{label}</span>
         </div>

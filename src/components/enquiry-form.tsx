@@ -6,15 +6,15 @@ import { submitEnquiry, type EnquiryState } from "@/app/promo/actions";
 const initial: EnquiryState = { status: "idle" };
 
 const field =
-  "mt-2 w-full rounded-sm border bg-ink/40 px-4 py-3.5 text-base text-bone placeholder:text-stone/80 transition-colors focus:border-copper focus:outline-none";
+  "mt-2 w-full rounded-sm border bg-ink/40 px-4 py-3.5 text-base text-bone placeholder:text-stone/80 transition-colors focus:border-red-bright focus:outline-none";
 
 export function EnquiryForm() {
   const [state, action, pending] = useActionState(submitEnquiry, initial);
 
   if (state.status === "ok") {
     return (
-      <div role="status" className="rounded-sm border border-copper/50 bg-copper/10 p-8">
-        <p className="eyebrow text-copper-bright">Request received</p>
+      <div role="status" className="rounded-sm border border-red/70 bg-red/20 p-8">
+        <p className="eyebrow text-red-bright">Request received</p>
         <p className="font-display mt-3 text-3xl leading-tight text-bone">{state.message}</p>
       </div>
     );
@@ -107,7 +107,7 @@ export function EnquiryForm() {
         <button
           type="submit"
           disabled={pending}
-          className="inline-flex items-center justify-center rounded-full bg-copper px-8 py-4 text-sm font-semibold text-ink transition-colors hover:bg-copper-bright disabled:cursor-wait disabled:opacity-70"
+          className="inline-flex items-center justify-center rounded-full bg-red px-8 py-4 text-sm font-semibold text-cream shadow-[0_10px_40px_-10px_rgba(153,0,17,0.9)] transition-colors hover:bg-red-deep disabled:cursor-wait disabled:opacity-70"
         >
           {pending ? "Sending…" : "Book my design visit"}
         </button>
