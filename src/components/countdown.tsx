@@ -47,10 +47,10 @@ export function Countdown({ endsAt }: { endsAt: string }) {
       {cells.map(([label, value]) => (
         <div
           key={label}
-          className="min-w-[4.25rem] rounded-sm border border-bone/15 bg-ink/50 px-3 py-3 text-center backdrop-blur-md sm:min-w-[5.25rem]"
+          className="min-w-[4.25rem] border border-bone/15 bg-ink/50 px-3 py-3 text-center backdrop-blur-md sm:min-w-[5.25rem]"
         >
           <span
-            className="font-display block overflow-hidden text-3xl tabular-nums text-bone sm:text-4xl"
+            className="font-display block overflow-hidden text-3xl font-extralight tabular-nums text-bone sm:text-4xl"
             aria-hidden={label === "Seconds"}
           >
             <span key={value ?? "x"} className={value === undefined ? "" : "tick"}>

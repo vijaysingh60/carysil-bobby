@@ -12,13 +12,15 @@ export const site = {
   /** Campaign line. Shown in the hero, intro, marquee and footer. */
   campaign: "Live the Carysil Life",
   campaignWords: ["Live the", "Carysil Life"],
-  collection: "The Outdoor Kitchen",
+  collection: "The Farmhouse Collection",
   tagline: "Cook where the evening begins.",
   description:
-    "Copper, stone and fire, built to live outside. Carysil's outdoor kitchen, with Bobby, for long evenings and longer tables.",
+    "The Farmhouse Collection with Bobby Deol: the Magic 6-in-1 faucet, a granite farmhouse sink, a rustic built-in oven, the Piccola coffee machine, a wine chiller, a built-in grill and a barbeque station for the outdoor kitchen.",
   url: "https://example.com",
   ambassador: {
-    name: "Bobby",
+    /** Carysil signed Bobby Deol as brand ambassador in October 2026. */
+    name: "Bobby Deol",
+    firstName: "Bobby",
     role: "The face of the campaign",
   },
   contact: {
@@ -56,81 +58,21 @@ export const offer = {
 } as const;
 
 export const nav = [
-  { href: "/#bobby", label: "The campaign" },
-  { href: "/#collection", label: "The kitchen" },
-  { href: "/#day-to-night", label: "Day to night" },
+  { href: "/#collection", label: "The collection" },
+  { href: "/#host", label: "The host" },
+  { href: "/#day", label: "A day outside" },
+  { href: "/#products", label: "Product list" },
+  { href: "/#visit", label: "Experience centres" },
   { href: "/promo", label: "Launch offer" },
 ] as const;
 
-/** Running line in the red marquee band. */
+/** Running line in the red marquee band (promo page). */
 export const marquee = [
   "Live the Carysil Life",
-  "Featuring Bobby",
+  "The Farmhouse Collection",
+  "Carysil × Bobby Deol",
   "German Engineered",
-  "The Outdoor Kitchen",
 ] as const;
 
-/** Story beats beside the sticky portrait. The portrait turns from B&W to colour as they scroll by. */
-export const story = [
-  {
-    eyebrow: "The face of the campaign",
-    title: ["Bobby,", "at home outdoors."],
-    body: "Shot at golden hour on open farmland, the campaign follows Bobby through one long evening: from the last light on the fence rails to the first lights strung over the grill.",
-  },
-  {
-    eyebrow: "Golden hour",
-    title: ["The light turns gold.", "The stone holds the heat."],
-    body: "As the sun drops, the copper starts to glow and the kitchen takes over from the day. This is the hour the whole set-up was built for.",
-  },
-  {
-    eyebrow: "Live the Carysil Life",
-    title: ["Made to be lived in,", "not looked at."],
-    body: "German-engineered sinks, taps and built-in appliances, set into stone and timber, for evenings that run long.",
-  },
-] as const;
-
-/** Numbered markers on the dusk kitchen photo (x/y are percent of the frame). */
-export const kitchenSpots = [
-  {
-    id: "tap",
-    x: 17.8,
-    y: 56.5,
-    title: "Pull-down tap",
-    body: "A copper-finish tap with a pull-down spray that reaches every corner of the bowl.",
-  },
-  {
-    id: "sink",
-    x: 24,
-    y: 67,
-    title: "Copper-finish sink",
-    body: "A deep single bowl in warm copper, big enough to wash produce straight from the garden.",
-  },
-  {
-    id: "espresso",
-    x: 35.5,
-    y: 56,
-    title: "Coffee corner",
-    body: "A small espresso station, so mornings start outside too.",
-  },
-  {
-    id: "oven",
-    x: 44.5,
-    y: 74,
-    title: "Built-in oven",
-    body: "Set into the stonework for slow roasts, fresh bread and pizza nights.",
-  },
-  {
-    id: "grill",
-    x: 68.5,
-    y: 63,
-    title: "Grill station",
-    body: "Stainless steel burners over a timber-fronted cabinet for tools, fuel and covers.",
-  },
-  {
-    id: "pergola",
-    x: 53,
-    y: 21,
-    title: "Pergola and lights",
-    body: "A timber pergola strung with warm bulbs keeps the kitchen going long after sunset.",
-  },
-] as const;
+/** Second, outlined marquee row that runs the other way. */
+export const marqueeAlt = ["Faucet", "Sink", "Oven", "Coffee", "Wine", "Grill"] as const;

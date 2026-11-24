@@ -1,66 +1,73 @@
 import type { Metadata, Viewport } from "next";
-import { Fraunces, Inter } from "next/font/google";
-import { IntroCurtain } from "@/components/intro-curtain";
+import { Archivo, Barlow } from "next/font/google";
+import { Cursor } from "@/components/cursor";
+import { IntroSignature } from "@/components/intro-signature";
 import { RevealObserver } from "@/components/reveal-observer";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { SmoothScroll } from "@/components/smooth-scroll";
-import { photos } from "@/lib/photos";
+import { farm } from "@/lib/media";
 import { site } from "@/lib/site";
 import "./globals.css";
 
-const fraunces = Fraunces({
+/**
+ * Same type pairing as carysil.com: Archivo and Barlow. Barlow light in caps (.title)
+ * carries the Sternhagen-style headings; Archivo keeps its width axis for the promo page.
+ */
+const archivo = Archivo({
   subsets: ["latin"],
-  style: ["normal", "italic"],
-  axes: ["opsz", "SOFT"],
-  variable: "--font-fraunces",
+  axes: ["wdth"],
+  variable: "--font-archivo",
 });
 
-const inter = Inter({
+const barlow = Barlow({
   subsets: ["latin"],
-  variable: "--font-inter",
+  weight: ["300", "400", "500", "600"],
+  variable: "--font-barlow",
 });
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
-    default: `${site.campaign} with ${site.ambassador.name} | ${site.brand}`,
+    default: `${site.collection} × ${site.ambassador.name} | ${site.campaign}`,
     template: `%s | ${site.campaign}`,
   },
   description: `${site.tagline} ${site.description}`,
   openGraph: {
     type: "website",
     siteName: `${site.brand}: ${site.campaign}`,
-    images: [
-      { url: photos.ambassadorFence.src, width: photos.ambassadorFence.width, height: photos.ambassadorFence.height },
-    ],
+    images: [{ url: farm.bobbyFence.src, width: farm.bobbyFence.width, height: farm.bobbyFence.height }],
   },
   twitter: { card: "summary_large_image" },
 };
 
 export const viewport: Viewport = {
-  themeColor: "#990011",
+  themeColor: "#0f0d0b",
   colorScheme: "dark",
 };
 
 /**
  * Runs before first paint:
  * - .js lets CSS hide scroll-reveal elements only when JS can reveal them again.
- * - .intro-seen skips the red intro curtain after the first page view this session.
+ * - .motion-ok marks a visitor who hasn't asked for reduced motion, so the scroll scenes
+ *   (hero, product stage, day gallery) can lay themselves out before React hydrates.
+ * - .intro-seen skips the signature intro after the first page view this session.
+ * - Manual scroll restoration: the pinned scenes are scrubbed to the scroll position, so a
+ *   reload starts at the top instead of being restored halfway through a scene.
  */
-const bootScript = `(function(){var d=document.documentElement;d.classList.add('js');try{if(sessionStorage.getItem('cl-intro'))d.classList.add('intro-seen');else sessionStorage.setItem('cl-intro','1')}catch(e){}})()`;
+const bootScript = `(function(){var d=document.documentElement;d.classList.add('js');try{history.scrollRestoration='manual'}catch(e){}try{if(matchMedia('(prefers-reduced-motion: no-preference)').matches)d.classList.add('motion-ok')}catch(e){}try{if(sessionStorage.getItem('cl-intro'))d.classList.add('intro-seen');else sessionStorage.setItem('cl-intro','1')}catch(e){}})()`;
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${fraunces.variable} ${inter.variable}`} suppressHydrationWarning>
+    <html lang="en" className={`${archivo.variable} ${barlow.variable}`} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: bootScript }} />
       </head>
       <body className="min-h-dvh">
-        <IntroCurtain />
+        <IntroSignature />
         <a
           href="#main"
-          className="sr-only z-[60] rounded-full bg-cream px-4 py-2 text-red focus:not-sr-only focus:fixed focus:top-3 focus:left-3"
+          className="sr-only z-[60] bg-cream px-4 py-2 text-red focus:not-sr-only focus:fixed focus:top-3 focus:left-3"
         >
           Skip to content
         </a>
@@ -69,6 +76,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <SiteFooter />
         <RevealObserver />
         <SmoothScroll />
+        <Cursor />
       </body>
     </html>
   );

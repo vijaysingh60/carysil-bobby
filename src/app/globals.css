@@ -2,41 +2,49 @@
 @import "lenis/dist/lenis.css";
 
 /*
- * Carysil red (#990011) is the brand colour, taken from the Carysil brand tokens.
- * It carries the nav, footer, buttons, marquee and transitions. The warm darks,
- * stone and copper come from the shoot itself.
+ * The Farmhouse Collection: the campaign lockup's red (#890606) on warm black, a paper
+ * cream taken from Sternhagen's "Ode to Germany", and brass from the Magic faucet.
+ * Type follows carysil.com (Archivo + Barlow); Barlow light in caps stands in for the
+ * DIN headings on sternhagen.com.
  */
 @theme {
-  --color-red: #990011;
-  --color-red-deep: #6f000c;
-  --color-red-bright: #e8424f; /* red for small text on dark backgrounds (AA contrast) */
-  --color-cream: #f7f4ee; /* ink on the red bar, as on the Carysil sites */
+  --color-red: #890606; /* "Live The CARYSIL life" lockup red */
+  --color-red-deep: #5c0404;
+  --color-red-bright: #e2575c; /* red for small text on dark backgrounds (AA contrast) */
+  --color-cream: #f7f3ec;
+  --color-paper: #f1ebe2; /* Ode-style paper */
+  --color-linen: #e6ddcf;
+  --color-graphite: #2c2d30; /* the lockup's script colour */
+  --color-graphite-soft: #6c665e;
 
-  --color-ink: #0d0b09;
+  --color-ink: #0f0d0b;
   --color-char: #171411;
-  --color-smoke: #24201c;
-  --color-line: #3a332c;
-  --color-bone: #f2ece3;
-  --color-sand: #e3d7c5;
-  --color-stone: #9d8f7d;
-  --color-muted: #b3a695;
+  --color-smoke: #201c18;
+  --color-line: #342e28;
+  --color-bone: #f5f1ea;
+  --color-sand: #d9d0c3;
+  --color-stone: #8f8579;
+  --color-muted: #a9a196;
+  --color-brass: #c9a66b;
+  --color-brass-deep: #8f6f3e;
   --color-copper: #c27a45;
   --color-ember: #f0b56b;
 
   --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-curtain: cubic-bezier(0.76, 0, 0.24, 1);
+  --ease-pen: cubic-bezier(0.55, 0.05, 0.3, 1);
 }
 
 @theme inline {
-  --font-display: var(--font-fraunces), ui-serif, Georgia, serif;
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-archivo), "Archivo", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-barlow), "Barlow", ui-sans-serif, system-ui, sans-serif;
 }
 
-/* How long the hero waits before animating in: long enough for the intro curtain
+/* How long the page waits before animating in: long enough for the signature intro
    on a first visit, short on later pages in the same session. */
 :root {
-  --intro-delay: 2.05s;
+  --intro-delay: 3s;
 }
 html.intro-seen {
   --intro-delay: 0.35s;
@@ -51,6 +59,7 @@ body {
   background: var(--color-ink);
   color: var(--color-bone);
   font-family: var(--font-sans);
+  font-weight: 400;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
@@ -65,20 +74,58 @@ body {
   outline-offset: 3px;
 }
 
-/* Display type: Fraunces at its large optical size reads like print. */
+/* Component classes sit in the components layer so Tailwind utilities on the same
+   element (font-thin, px-*, text-*) still win. */
+@layer components {
+/* ─────────────────────────── Type ─────────────────────────── */
 .font-display {
-  font-variation-settings:
-    "opsz" 144,
-    "SOFT" 30;
-  letter-spacing: -0.02em;
+  font-family: var(--font-display);
+  font-weight: 300;
+  letter-spacing: -0.035em;
+}
+
+/* Sternhagen-style headings: light caps, tight leading. */
+.title {
+  font-family: var(--font-sans);
+  font-weight: 300;
+  text-transform: uppercase;
+  letter-spacing: -0.005em;
+  line-height: 0.94;
 }
 
 .eyebrow {
   font-family: var(--font-sans);
   font-size: 0.72rem;
-  font-weight: 600;
+  font-weight: 500;
   letter-spacing: 0.24em;
   text-transform: uppercase;
+}
+
+/* carysil.com section label: a short red rule, then tracked caps. */
+.kicker {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  font-family: var(--font-sans);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+}
+.kicker::before {
+  content: "";
+  width: 2.25rem;
+  height: 1px;
+  background: var(--color-red-bright);
+}
+.kicker-light::before {
+  background: var(--color-red);
+}
+
+/* Outlined display type. */
+.outline-text {
+  -webkit-text-fill-color: transparent; /* keeps `color` for the stroke */
+  -webkit-text-stroke: 1px currentColor;
 }
 
 /* "GERMAN ENGINEERED" under the wordmark, as on carysil.com. The left padding
@@ -98,6 +145,119 @@ body {
   }
 }
 
+/* ─────────────────────────── Buttons ───────────────────────────
+   Sharp rectangles with tracked caps (carysil.com). A fill wipes up from the
+   bottom on hover and the label rolls to a second copy of itself. */
+.btn {
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+  overflow: hidden;
+  padding: 1.1rem 1.9rem;
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  transition:
+    color 0.6s var(--ease-expo),
+    border-color 0.6s var(--ease-expo);
+}
+.btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  transform: scaleY(0);
+  transform-origin: 50% 100%;
+  transition: transform 0.65s var(--ease-expo);
+}
+.btn:hover::before,
+.btn:focus-visible::before {
+  transform: scaleY(1);
+}
+.btn-red {
+  background: var(--color-red);
+  color: var(--color-cream);
+}
+.btn-red::before {
+  background: var(--color-ink);
+}
+.btn-line {
+  border: 1px solid color-mix(in oklab, var(--color-cream) 55%, transparent);
+  color: var(--color-cream);
+}
+.btn-line::before {
+  background: var(--color-cream);
+}
+.btn-line:hover,
+.btn-line:focus-visible {
+  color: var(--color-ink);
+  border-color: var(--color-cream);
+}
+.btn-ink {
+  background: var(--color-graphite);
+  color: var(--color-cream);
+}
+.btn-ink::before {
+  background: var(--color-red);
+}
+.btn-cream {
+  background: var(--color-cream);
+  color: var(--color-red);
+}
+.btn-cream::before {
+  background: var(--color-ink);
+}
+.btn-cream:hover,
+.btn-cream:focus-visible {
+  color: var(--color-cream);
+}
+.btn-brass {
+  background: var(--color-brass);
+  color: var(--color-ink);
+}
+.btn-brass::before {
+  background: var(--color-cream);
+}
+.btn-dark {
+  border: 1px solid color-mix(in oklab, var(--color-graphite) 40%, transparent);
+  color: var(--color-graphite);
+}
+.btn-dark::before {
+  background: var(--color-graphite);
+}
+.btn-dark:hover,
+.btn-dark:focus-visible {
+  color: var(--color-cream);
+}
+
+.roll {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+}
+.roll > span {
+  display: block;
+  transition: transform 0.6s var(--ease-expo);
+}
+.roll > span::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 100%;
+  left: 0;
+}
+:is(a, button):is(:hover, :focus-visible) .roll > span {
+  transform: translateY(-100%);
+}
+
+}
+
 /* Film grain over photos, very light, so flat gradients don't band. */
 .grain::after {
   content: "";
@@ -109,59 +269,90 @@ body {
   background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
 }
 
-/* ─────────────────────────── Intro curtain ───────────────────────────
-   Pure CSS, so it runs and clears itself even before (or without) JS.
-   An inline script adds .intro-seen on later visits in the session to skip it. */
-.intro {
+/* ─────────────────────────── Signature intro ───────────────────────────
+   Pure CSS, so it runs and clears itself even before (or without) JS. On warm black,
+   "Live The" writes itself on, CARYSIL rises letter by letter, "life" signs off,
+   then the black lifts away like a sheet. .intro-seen (set by the boot script on
+   later page views this session) skips it. */
+.sig {
   position: fixed;
   inset: 0;
   z-index: 100;
-  animation: intro-gone 0s linear 2.95s forwards;
+  display: grid;
+  place-items: center;
+  background: var(--color-ink);
+  clip-path: inset(0 0 0 0);
+  animation:
+    sig-lift 1.1s var(--ease-curtain) 2.55s forwards,
+    intro-gone 0s linear 3.7s forwards;
 }
-.intro-panel {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 1.75rem;
-  background: var(--color-red);
-  color: var(--color-cream);
-  animation: curtain-up 1s var(--ease-curtain) 1.9s forwards;
+.sig-inner {
+  width: min(82vw, 760px);
+  animation: sig-out 0.95s var(--ease-curtain) 2.4s forwards;
 }
-.intro-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1.75rem;
-  animation: intro-content-out 0.7s var(--ease-curtain) 1.75s forwards;
+.sig [data-logo-live],
+.sig [data-logo-life] {
+  clip-path: inset(-40% 100% -40% 0);
 }
-.intro-mask {
-  overflow: hidden;
-  padding: 0.12em 0.1em;
+.sig [data-logo-live] {
+  animation: pen 1s var(--ease-pen) 0.25s forwards;
 }
-.intro-logo {
-  transform: translateY(110%);
-  animation: rise-in 1s var(--ease-expo) 0.15s forwards;
+.sig [data-logo-life] {
+  animation: pen 0.75s var(--ease-pen) 1.6s forwards;
 }
-.intro-rule {
+.sig [data-logo-letter] {
+  transform: translateY(48px);
+  animation: rise-in 0.95s var(--ease-expo) calc(0.95s + var(--l, 0) * 0.06s) forwards;
+}
+.sig-rule {
   height: 1px;
-  width: min(16rem, 50vw);
-  background: currentColor;
-  opacity: 0.6;
+  margin: 2.2rem auto 0;
+  width: min(14rem, 40vw);
+  background: color-mix(in oklab, var(--color-bone) 35%, transparent);
   transform: scaleX(0);
-  animation: rule-in 0.9s var(--ease-expo) 0.55s forwards;
+  animation: rule-in 1.4s var(--ease-curtain) 1.2s forwards;
 }
-.intro-word {
-  display: inline-block;
-  transform: translateY(110%);
-  animation: rise-in 0.9s var(--ease-expo) calc(0.7s + var(--i, 0) * 0.08s) forwards;
+.sig-meta {
+  position: absolute;
+  inset-inline: 1.25rem;
+  bottom: 1.25rem;
+  display: flex;
+  justify-content: space-between;
+  color: color-mix(in oklab, var(--color-bone) 60%, transparent);
+  opacity: 0;
+  animation: fade-in 0.8s ease 0.6s forwards;
 }
-html.intro-seen .intro {
+@media (min-width: 1024px) {
+  .sig-meta {
+    inset-inline: 2.5rem;
+    bottom: 2rem;
+  }
+}
+html.intro-seen .sig {
   display: none;
 }
 
+@keyframes pen {
+  to {
+    clip-path: inset(-40% 0 -40% 0);
+  }
+}
+@keyframes sig-lift {
+  to {
+    clip-path: inset(0 0 100% 0);
+  }
+}
+@keyframes sig-out {
+  to {
+    transform: translateY(-28%);
+    opacity: 0;
+  }
+}
+@keyframes fade-in {
+  to {
+    opacity: 1;
+  }
+}
 @keyframes intro-gone {
   to {
     visibility: hidden;
@@ -171,12 +362,6 @@ html.intro-seen .intro {
 @keyframes curtain-up {
   to {
     transform: translateY(-100%);
-  }
-}
-@keyframes intro-content-out {
-  to {
-    transform: translateY(-40%);
-    opacity: 0;
   }
 }
 @keyframes rise-in {
@@ -206,8 +391,6 @@ html.intro-seen .intro {
   display: inline-block;
   overflow: hidden;
   vertical-align: top;
-  /* room for Fraunces italic overhang and descenders (horizontal margins are left
-     to the word-spacing utility on the element) */
   padding: 0 0.06em 0.14em;
   margin-bottom: -0.14em;
 }
@@ -232,7 +415,6 @@ html.intro-seen .intro {
   }
 }
 
-/* Hero image settles from a slow zoom as the curtain lifts. */
 .animate-settle {
   animation: settle 3.2s var(--ease-out-soft) both;
   animation-delay: calc(var(--intro-delay) - 0.5s);
@@ -252,13 +434,13 @@ html.intro-seen .intro {
   width: 1px;
   height: 3.5rem;
   overflow: hidden;
-  background: color-mix(in oklab, var(--color-bone) 25%, transparent);
+  background: color-mix(in oklab, currentColor 25%, transparent);
 }
 .scroll-cue::after {
   content: "";
   position: absolute;
   inset: 0;
-  background: var(--color-bone);
+  background: currentColor;
   transform: translateY(-100%);
   animation: cue 2.2s var(--ease-curtain) infinite;
 }
@@ -272,12 +454,43 @@ html.intro-seen .intro {
   }
 }
 
+/* ─────────────────────────── Scroll scenes ───────────────────────────
+   Pinned scenes are tall sections with a sticky stage (no pin spacers, so they
+   behave the same with Lenis, on touch, and when Next.js re-shows a hidden page).
+   They only get their scroll length with .motion-ok (set before first paint);
+   otherwise they collapse to a plain section and the still fallback shows. */
+.motion-only {
+  display: none;
+}
+html.motion-ok .motion-only {
+  display: block;
+}
+html.motion-ok .still-only {
+  display: none;
+}
+
+.scene-stage {
+  position: relative;
+  height: 100svh;
+  overflow: hidden;
+}
+html.motion-ok .scene {
+  height: calc(100svh + var(--scene-length, 200svh));
+}
+html.motion-ok .scene > .scene-stage {
+  position: sticky;
+  top: 0;
+}
+
 /* ─────────────────────────── Marquee ───────────────────────────
    CSS drives it until GSAP takes over (html.motion-on) and ties speed to scroll. */
 .marquee-track {
   display: flex;
   width: max-content;
   animation: marquee 38s linear infinite;
+}
+.marquee-track.reverse {
+  animation-direction: reverse;
 }
 html.motion-on .marquee-track {
   animation: none;
@@ -303,21 +516,24 @@ html.motion-on .marquee-track {
   transform: none;
 }
 
-/* Story beats beside the sticky portrait: the one in view is lit, the rest dim. */
-@media (min-width: 1024px) {
-  html.motion-on .story-step {
-    opacity: 0.25;
-    transition: opacity 0.8s var(--ease-out-soft);
-  }
-  html.motion-on .story-step.is-active {
-    opacity: 1;
-  }
-}
-
 /* SplitText line masks need a little room for descenders. */
 .split-line-mask {
   padding-bottom: 0.1em;
   margin-bottom: -0.1em;
+}
+
+/* ─────────────────────────── Cursor ───────────────────────────
+   A red label disc follows the pointer over [data-cursor] areas (fine pointers only). */
+.cursor {
+  display: none;
+}
+@media (hover: hover) and (pointer: fine) {
+  html.motion-ok .cursor {
+    display: flex;
+  }
+  html.motion-ok [data-cursor] {
+    cursor: none;
+  }
 }
 
 /* Countdown digits drop in when they change. */
@@ -336,18 +552,140 @@ html.motion-on .marquee-track {
   animation: tick 0.55s var(--ease-expo);
 }
 
-@keyframes pulse-ring {
-  0% {
-    transform: scale(0.8);
-    opacity: 0.8;
+@keyframes grow-x {
+  from {
+    transform: scaleX(0);
   }
-  100% {
-    transform: scale(2.2);
-    opacity: 0;
+  to {
+    transform: scaleX(1);
   }
 }
-.hotspot-ring {
-  animation: pulse-ring 2.2s ease-out infinite;
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.spin-slow {
+  animation: spin 22s linear infinite;
+}
+
+/* ─────────────────────────── Farmhouse hero ───────────────────────────
+   Timber louvres swing open on the kitchen while it settles from a slight zoom and the
+   title rises; GSAP then pushes the camera through the pergola into Bobby. Everything
+   here is transform/opacity only. Without motion none of it shows and the hero is the
+   finished frame. */
+.hp-title,
+.hp-louvres {
+  display: none;
+}
+html.motion-ok .hp-title {
+  display: block;
+}
+html.motion-ok .hp-louvres {
+  display: flex;
+  flex-direction: column;
+  perspective: 1600px;
+  animation: intro-gone 0s linear calc(var(--intro-delay) + 2.7s) forwards;
+}
+.hp-louvre {
+  flex: 1;
+  margin-bottom: -1px; /* no hairline seams between slats */
+  background: linear-gradient(180deg, #221d18 0%, var(--color-ink) 55%, #2b241d 100%);
+  box-shadow: inset 0 -1px 0 rgb(201 166 107 / 0.18);
+  transform-origin: 50% 0%;
+  backface-visibility: hidden;
+  animation: louvre-open 1.3s var(--ease-curtain) calc(var(--intro-delay) + 0.5s + var(--s, 0) * 0.07s) forwards;
+}
+@keyframes louvre-open {
+  to {
+    transform: rotateX(-90deg);
+  }
+}
+html.motion-ok .hp-settle {
+  transform: scale(1.12);
+  transform-origin: 56.6% 41.5%; /* the pergola opening, so the camera's aim never drifts */
+  animation: hp-settle 2.8s var(--ease-out-soft) calc(var(--intro-delay) + 0.6s) forwards;
+}
+@keyframes hp-settle {
+  to {
+    transform: none;
+  }
+}
+.hp-letter {
+  display: inline-block;
+  transform: translateY(108%);
+  animation: rise-in 1.3s var(--ease-expo) calc(var(--intro-delay) + 1.05s + var(--i, 0) * 0.035s) forwards;
+}
+.hp-fade {
+  opacity: 0;
+  animation: fade-in 1.1s ease calc(var(--intro-delay) + 1.1s) forwards;
+}
+html.motion-ok [data-hp-bobby] {
+  opacity: 0;
+}
+html.motion-ok [data-hp-in] {
+  opacity: 0;
+}
+
+/* Desktop-only pinned scenes (the sideways gallery): on touch screens they stay a normal
+   section with a native swipe strip. */
+@media (min-width: 1024px) {
+  html.motion-ok .scene-lg {
+    height: calc(100svh + var(--scene-length, 200svh));
+  }
+  html.motion-ok .scene-lg-stage {
+    position: sticky;
+    top: 0;
+    height: 100svh;
+    overflow: hidden;
+  }
+  html.motion-ok .day-track {
+    overflow: visible;
+    scroll-snap-type: none;
+  }
+}
+
+/* ─────────────────────────── Sections ─────────────────────────── */
+/* Manifesto words come into focus as they scroll through (GSAP scrubs these). */
+.focus-word {
+  display: inline-block;
+}
+html.motion-ok .focus-word {
+  opacity: 0.14;
+  filter: blur(8px);
+}
+
+/* Product stage: warm glow behind each piece. */
+.stage-glow {
+  background: radial-gradient(closest-side, rgb(201 166 107 / 0.3), rgb(137 6 6 / 0.12) 55%, transparent 78%);
+}
+html.motion-ok [data-st-item] ~ [data-st-item] {
+  opacity: 0;
+  visibility: hidden;
+}
+
+/* Ode-style banners: the box opens from the bottom, the photo settles inside it. */
+html.motion-ok [data-banner] {
+  clip-path: inset(100% 0 0 0);
+}
+
+/* Architectural drawing lines (blueprint, footer) wait to be drawn. */
+html.motion-ok [data-draw] {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+
+/* The catalogue back cover's zigzag lines, drifting slowly on the red. */
+.zigzag {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='72' height='28' viewBox='0 0 72 28'><path d='M0 22 L18 6 L36 22 L54 6 L72 22' fill='none' stroke='white' stroke-width='1'/></svg>");
+  background-size: 72px 28px;
+  animation: zig 60s linear infinite;
+}
+@keyframes zig {
+  to {
+    background-position: 720px 280px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -355,7 +693,7 @@ html.motion-on .marquee-track {
   html.intro-seen {
     --intro-delay: 0s;
   }
-  .intro,
+  .sig,
   .route-wipe {
     display: none;
   }
@@ -369,5 +707,8 @@ html.motion-on .marquee-track {
   .js [data-reveal] {
     opacity: 1;
     transform: none;
+  }
+  .zigzag {
+    animation: none;
   }
 }

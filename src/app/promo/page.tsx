@@ -7,14 +7,14 @@ import { EnquiryForm } from "@/components/enquiry-form";
 import { Marquee } from "@/components/marquee";
 import { MaskedWords } from "@/components/masked-words";
 import { PageMotion } from "@/components/page-motion";
-import { photos } from "@/lib/photos";
+import { farm } from "@/lib/media";
 import { offer, site } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Launch offer",
   description: `${offer.title}: ${offer.perks.map((p) => p.title.toLowerCase()).join(", ")}. Book a Carysil design visit for your outdoor kitchen.`,
   openGraph: {
-    images: [{ url: photos.kitchenNight.src, width: photos.kitchenNight.width, height: photos.kitchenNight.height }],
+    images: [{ url: farm.kitchenNight.src, width: farm.kitchenNight.width, height: farm.kitchenNight.height }],
   },
 };
 
@@ -34,10 +34,10 @@ const rise = (ms: number) => ({ "--rise-delay": `${ms}ms` }) as CSSProperties;
 const revealDelay = (ms: number) => ({ "--reveal-delay": `${ms}ms` }) as CSSProperties;
 
 const moods = [
-  { img: photos.kitchenDay, label: "Golden hour", alt: "The outdoor kitchen in late afternoon sun" },
-  { img: photos.kitchenDusk, label: "Dusk", alt: "The outdoor kitchen at dusk with the string lights on" },
-  { img: photos.kitchenNight, label: "Lights on", alt: "The outdoor kitchen at night under a starry sky" },
-  { img: photos.kitchenNightWarm, label: "Last guests", alt: "The outdoor kitchen late at night, lit warm from below" },
+  { img: farm.kitchenDay, label: "Golden hour", alt: "The outdoor kitchen in late afternoon sun" },
+  { img: farm.kitchenDusk, label: "Dusk", alt: "The outdoor kitchen at dusk with the string lights on" },
+  { img: farm.kitchenNight, label: "Lights on", alt: "The outdoor kitchen at night under a starry sky" },
+  { img: farm.kitchenNightWarm, label: "Last guests", alt: "The outdoor kitchen late at night, lit warm from below" },
 ];
 
 const promoMarquee = [offer.title, `Until ${endDate}`, ...offer.perks.map((p) => p.title)];
@@ -51,7 +51,7 @@ export default function PromoPage() {
       <section data-hero className="grain relative isolate flex min-h-[100svh] items-end overflow-hidden">
         <div data-hero-media className="absolute inset-0 -z-10">
           <Image
-            src={photos.kitchenNight}
+            src={farm.kitchenNight}
             alt="Outdoor stone kitchen under a pergola of string lights on a starry night"
             fill
             preload
@@ -68,30 +68,26 @@ export default function PromoPage() {
         >
           <div>
             <p className="eyebrow animate-rise flex flex-wrap items-center gap-3 text-cream/90">
-              <span className="rounded-full bg-red px-3 py-1.5 text-[0.62rem] text-cream">{site.campaign}</span>
+              <span className="bg-red px-3 py-1.5 text-[0.62rem] text-cream">{site.campaign}</span>
               Until {endDate}
             </p>
-            <h1 className="font-display mt-6 text-[clamp(3rem,9vw,7.5rem)] leading-[0.92]">
+            <h1 className="font-display mt-6 text-[clamp(3rem,9vw,7.5rem)] leading-[0.92] font-extralight uppercase">
               <MaskedWords text="Bring the evening" />{" "}
-              <MaskedWords text="home." start={3} className="text-ember italic" />
+              <MaskedWords text="home." start={3} className="font-light text-ember" />
             </h1>
             <p className="animate-rise mt-7 max-w-lg text-lg leading-relaxed text-sand/90" style={rise(480)}>
               {perkList} on the outdoor kitchen from the {ambassador.name} campaign.
             </p>
             <div className="animate-rise mt-9 flex flex-wrap gap-3" style={rise(620)}>
-              <Link
-                href="#book"
-                data-magnetic
-                className="rounded-full bg-red px-7 py-3.5 text-sm font-semibold text-cream shadow-[0_10px_40px_-10px_rgba(153,0,17,0.9)] transition-colors hover:bg-red-deep"
-              >
-                Book a design visit
+              <Link href="#book" data-magnetic className="btn btn-red">
+                <span className="roll">
+                  <span data-text="Book a design visit">Book a design visit</span>
+                </span>
               </Link>
-              <Link
-                href="#terms"
-                data-magnetic
-                className="rounded-full border border-cream/40 px-7 py-3.5 text-sm font-medium text-cream backdrop-blur-sm transition-colors hover:border-cream hover:bg-cream/10"
-              >
-                Offer terms
+              <Link href="#terms" data-magnetic className="btn btn-line">
+                <span className="roll">
+                  <span data-text="Offer terms">Offer terms</span>
+                </span>
               </Link>
             </div>
           </div>
@@ -105,31 +101,31 @@ export default function PromoPage() {
       <Marquee items={promoMarquee} />
 
       {/* ───────────── Perks ───────────── */}
-      <section className="bg-bone text-ink">
+      <section className="bg-cream text-graphite">
         <div className="mx-auto max-w-7xl px-4 py-28 sm:px-6 sm:py-36 lg:px-10">
           <div className="grid gap-6 lg:grid-cols-2 lg:items-end">
-            <h2 data-split className="font-display text-[clamp(2.5rem,6vw,4.75rem)] leading-[0.98]">
-              What the offer <span className="text-red italic">includes.</span>
+            <h2 data-split className="font-display text-[clamp(2.5rem,6vw,4.75rem)] leading-[0.98] font-light">
+              What the offer <span className="text-red">includes.</span>
             </h2>
-            <p data-reveal className="max-w-md text-[1.05rem] leading-relaxed text-ink/70 lg:justify-self-end">
+            <p data-reveal className="max-w-md text-[1.05rem] leading-relaxed text-graphite-soft lg:justify-self-end">
               Three things that usually cost extra, included on Carysil outdoor kitchens ordered before {endDate}.
             </p>
           </div>
-          <ol className="mt-16 grid gap-px overflow-hidden rounded-sm bg-ink/15 md:grid-cols-3">
+          <ol className="mt-16 grid gap-px overflow-hidden bg-graphite/15 md:grid-cols-3">
             {offer.perks.map((perk, i) => (
               <li
                 key={perk.title}
                 data-reveal
                 style={revealDelay(i * 130)}
-                className="group relative overflow-hidden bg-bone p-8 transition-colors duration-500 hover:bg-red sm:p-10"
+                className="group relative overflow-hidden bg-cream p-8 transition-colors duration-500 hover:bg-red sm:p-10"
               >
-                <span className="font-display text-6xl text-red transition-colors duration-500 group-hover:text-cream">
+                <span className="font-display text-6xl font-thin text-red transition-colors duration-500 group-hover:text-cream">
                   {String(i + 1).padStart(2, "0")}
                 </span>
-                <h3 className="font-display mt-10 text-2xl leading-tight transition-colors duration-500 group-hover:text-cream">
+                <h3 className="font-display mt-10 text-2xl leading-tight font-normal transition-colors duration-500 group-hover:text-cream">
                   {perk.title}
                 </h3>
-                <p className="mt-3 leading-relaxed text-ink/70 transition-colors duration-500 group-hover:text-cream/85">
+                <p className="mt-3 leading-relaxed text-graphite-soft transition-colors duration-500 group-hover:text-cream/85">
                   {perk.body}
                 </p>
               </li>
@@ -139,12 +135,12 @@ export default function PromoPage() {
       </section>
 
       {/* ───────────── Bobby feature ───────────── */}
-      <section className="relative isolate overflow-hidden bg-char">
+      <section className="relative isolate overflow-hidden bg-ink">
         <div className="mx-auto grid max-w-7xl lg:grid-cols-2">
           <div data-clip className="relative aspect-[4/5] overflow-hidden sm:aspect-[3/2] lg:aspect-auto lg:min-h-[46rem]">
             <div data-clip-inner className="absolute inset-0">
               <Image
-                src={photos.ambassadorGaze}
+                src={farm.bobbyBrow}
                 alt={`${ambassador.name} in a black shirt, leaning on a fence at golden hour`}
                 fill
                 sizes="(min-width: 1024px) 50vw, 100vw"
@@ -160,12 +156,12 @@ export default function PromoPage() {
               <span aria-hidden="true" className="h-px w-10 bg-red-bright/60" />
               As seen in the campaign
             </p>
-            <h2 data-split className="font-display mt-6 text-[clamp(2.5rem,5vw,4.25rem)] leading-[0.98]">
-              The kitchen from {ambassador.name}&rsquo;s evening, <span className="text-sand italic">built for yours.</span>
+            <h2 data-split className="font-display mt-6 text-[clamp(2.5rem,5vw,4.25rem)] leading-[0.98] font-light">
+              The kitchen from {ambassador.firstName}&rsquo;s evening, <span className="font-thin text-sand">built for yours.</span>
             </h2>
             <p data-reveal className="mt-7 max-w-md text-[1.05rem] leading-relaxed text-sand/85">
-              The copper sink, the tap, the oven set into the stone: the same pieces from the shoot, planned around your
-              garden, terrace or farmhouse.
+              The granite farmhouse sink, the Magic 6-in-1 faucet, the rustic oven set into the stone: the same pieces from
+              the shoot, planned around your garden, terrace or farmhouse.
             </p>
             <div data-reveal className="mt-10">
               <Link
@@ -203,14 +199,14 @@ export default function PromoPage() {
               <span aria-hidden="true" className="h-px w-10 bg-red-bright/60" />
               One kitchen
             </p>
-            <h2 className="font-display mt-6 text-[clamp(2.5rem,4.6vw,4.5rem)] leading-[0.98]">
-              Four moods. <span className="text-sand italic">One long evening.</span>
+            <h2 className="font-display mt-6 text-[clamp(2.5rem,4.6vw,4.5rem)] leading-[0.98] font-light">
+              Four moods. <span className="font-thin text-sand">One long evening.</span>
             </h2>
             <p className="mt-6 max-w-xs text-sand/80 max-lg:hidden">Keep scrolling: the light moves from gold to dark.</p>
           </div>
           {moods.map((m, i) => (
             <figure key={m.label} className="w-[78vw] shrink-0 snap-start sm:w-[44vw] lg:w-[36vw]">
-              <div className="group relative aspect-[4/5] overflow-hidden rounded-sm bg-smoke lg:aspect-auto lg:h-[68svh]">
+              <div className="group relative aspect-[4/5] overflow-hidden rounded-xl bg-smoke lg:aspect-auto lg:h-[68svh]">
                 <Image
                   src={m.img}
                   alt={m.alt}
@@ -219,12 +215,12 @@ export default function PromoPage() {
                   placeholder="blur"
                   className="object-cover object-[50%_60%] transition-transform duration-[1600ms] ease-[var(--ease-expo)] group-hover:scale-105"
                 />
-                <span className="font-display absolute top-5 left-5 text-5xl text-cream/90 tabular-nums">
+                <span className="font-display absolute top-5 left-5 text-5xl font-thin text-cream/90 tabular-nums">
                   {String(i + 1).padStart(2, "0")}
                 </span>
               </div>
               <figcaption className="mt-4 flex items-center justify-between text-sand/85">
-                <span className="font-display text-xl">{m.label}</span>
+                <span className="font-display text-xl font-light">{m.label}</span>
                 <span className="eyebrow text-[0.6rem] text-stone">{String(i + 1).padStart(2, "0")} / 04</span>
               </figcaption>
             </figure>
@@ -240,8 +236,8 @@ export default function PromoPage() {
               <span aria-hidden="true" className="h-px w-10 bg-red-bright/60" />
               Book a design visit
             </p>
-            <h2 data-split className="font-display mt-6 text-[clamp(2.5rem,5vw,4.25rem)] leading-[0.98]">
-              Tell us about <span className="text-sand italic">your space.</span>
+            <h2 data-split className="font-display mt-6 text-[clamp(2.5rem,5vw,4.25rem)] leading-[0.98] font-light">
+              Tell us about <span className="font-thin text-sand">your space.</span>
             </h2>
             <p data-reveal className="mt-7 max-w-sm text-[1.05rem] leading-relaxed text-sand/85">
               Leave your details and a Carysil design consultant will call to fix a visit. No cost, no obligation.
@@ -271,7 +267,7 @@ export default function PromoPage() {
       <section id="terms" className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-10">
         <details className="group border-y border-line/70">
           <summary className="flex cursor-pointer list-none items-center justify-between py-6 [&::-webkit-details-marker]:hidden">
-            <span className="font-display text-2xl">Offer terms and conditions</span>
+            <span className="font-display text-2xl font-light">Offer terms and conditions</span>
             <span
               aria-hidden="true"
               className="flex size-10 items-center justify-center rounded-full bg-red text-xl text-cream transition-transform duration-500 ease-[var(--ease-expo)] group-open:rotate-45"
@@ -290,10 +286,7 @@ export default function PromoPage() {
 
       {/* ───────────── Sticky mobile CTA ───────────── */}
       <div className="fixed inset-x-0 bottom-0 z-40 border-t border-red-deep bg-red px-4 py-3 md:hidden">
-        <Link
-          href="#book"
-          className="flex w-full items-center justify-center rounded-full bg-cream py-3.5 text-sm font-semibold text-red"
-        >
+        <Link href="#book" className="btn btn-cream w-full">
           Book a design visit
         </Link>
       </div>

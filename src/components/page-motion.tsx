@@ -15,12 +15,16 @@ gsap.registerPlugin(ScrollTrigger, SplitText);
  *   data-clip           image box wipes open from the bottom; [data-clip-inner] zooms out
  *   data-parallax="12"  element drifts ±12% against the scroll
  *   data-hero           hero: [data-hero-media] sinks, [data-hero-content] lifts and fades
- *   data-marquee        running band; speed and direction follow the scroll
- *   data-story          sticky portrait turns from B&W to colour; [data-story-step] beats
+ *   data-marquee        running bands ([data-marquee-track="1|-1"]); speed and direction follow
+ *                       the scroll and the type leans with scroll velocity
+ *   data-story          sticky portrait opens from a slit ([data-story-slit]) and turns from
+ *                       B&W to colour; [data-story-step] beats
+ *   data-drift-x="-30"  element slides sideways by that many percent across its section
  *   data-pop-group      children marked [data-pop] spring in
  *   data-hscroll        (desktop) section pins and [data-hscroll-track] scrolls sideways
  *   data-magnetic       (fine pointer) buttons lean toward the cursor
- *   data-footer-type    the footer's campaign line rises in
+ *   data-footer-type    the footer's campaign line rises in and stretches from condensed to
+ *                       expanded on Archivo's width axis
  *
  * Next.js keeps visited pages mounted but hidden (React Activity), so everything is
  * scoped to this page's [data-page] root and torn down when the page is hidden.
@@ -117,29 +121,42 @@ export function PageMotion() {
             gsap.to(content, { yPercent: -18, opacity: 0, ease: "none", scrollTrigger: { ...st, end: "bottom 25%" } });
         });
 
-        // Marquee: steady drift, pushed faster by scroll speed, reversed by scroll direction.
+        // Marquee: steady drift, pushed faster by scroll speed, reversed by scroll direction,
+        // and the type leans into the scroll (skew eases back when the scroll stops).
         q("[data-marquee]").forEach((band) => {
-          const track = band.querySelector<HTMLElement>(".marquee-track");
-          if (!track) return;
-          const setX = gsap.quickSetter(track, "xPercent");
+          const tracks = q("[data-marquee-track]", band).map((track) => ({
+            sign: Number(track.dataset.marqueeTrack) || 1,
+            setX: gsap.quickSetter(track, "xPercent"),
+            x: Number(track.dataset.marqueeTrack) < 0 ? -25 : 0,
+          }));
+          if (!tracks.length) return;
+          const skewTo = q("[data-marquee-track]", band).map((t) =>
+            gsap.quickTo(t, "skewX", { duration: 0.5, ease: "power3.out" }),
+          );
           const wrap = gsap.utils.wrap(-50, 0);
           const base = 50 / 36; // percent per second
-          let x = 0;
           let dir = 1;
           let boost = 0;
+          let skew = 0;
           const st = ScrollTrigger.create({
             trigger: band,
             start: "top bottom",
             end: "bottom top",
             onUpdate: (self) => {
               dir = self.direction;
-              boost = Math.min(Math.abs(self.getVelocity()) / 260, 6);
+              const v = self.getVelocity();
+              boost = Math.min(Math.abs(v) / 260, 6);
+              skew = gsap.utils.clamp(-14, 14, -v / 160);
             },
           });
           const tick = (_t: number, dt: number) => {
             boost *= 0.93;
-            x = wrap(x - dir * base * (1 + boost) * (dt / 1000));
-            setX(x);
+            skew *= 0.9;
+            tracks.forEach((t, i) => {
+              t.x = wrap(t.x - t.sign * dir * base * (1 + boost) * (dt / 1000));
+              t.setX(t.x);
+              skewTo[i](skew * t.sign);
+            });
           };
           gsap.ticker.add(tick);
           cleanups.push(() => {
@@ -148,8 +165,19 @@ export function PageMotion() {
           });
         });
 
-        // Sticky story: the portrait warms from B&W to colour, beats highlight in turn.
+        // Sticky story: the portrait opens from a slit, warms from B&W to colour, beats highlight in turn.
         q("[data-story]").forEach((section) => {
+          const slit = section.querySelector("[data-story-slit]");
+          if (slit)
+            gsap.fromTo(
+              slit,
+              { clipPath: "inset(6% 42% 6% 42% round 12px)" },
+              {
+                clipPath: "inset(0% 0% 0% 0% round 12px)",
+                ease: "power2.inOut",
+                scrollTrigger: { trigger: section, start: "top 75%", end: "top -5%", scrub: 0.6 },
+              },
+            );
           const colour = section.querySelector("[data-story-colour]");
           const frame = section.querySelector("[data-story-frame]");
           const counter = section.querySelector("[data-story-count]");
@@ -176,6 +204,17 @@ export function PageMotion() {
               },
             });
           });
+        });
+
+        // Sideways drift across the parent section.
+        q("[data-drift-x]").forEach((el) => {
+          const amt = parseFloat(el.dataset.driftX || "-30");
+          const section = el.closest("section") ?? el;
+          gsap.fromTo(
+            el,
+            { xPercent: 0 },
+            { xPercent: amt, ease: "none", scrollTrigger: { trigger: section, start: "top bottom", end: "bottom top", scrub: true } },
+          );
         });
 
         // Markers spring in.
@@ -217,10 +256,11 @@ export function PageMotion() {
         if (footerType)
           gsap.fromTo(
             footerType,
-            { yPercent: 70, xPercent: 8 },
+            { yPercent: 60, fontVariationSettings: '"wdth" 62', letterSpacing: "-0.06em" },
             {
               yPercent: 0,
-              xPercent: 0,
+              fontVariationSettings: '"wdth" 125',
+              letterSpacing: "-0.03em",
               ease: "none",
               scrollTrigger: { trigger: footerType, start: "top bottom", end: "bottom bottom", scrub: true },
             },

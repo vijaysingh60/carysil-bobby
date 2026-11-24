@@ -4,12 +4,16 @@ import type { CSSProperties } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { CarysilLogo } from "@/components/carysil-logo";
+import { CampaignLogo } from "@/components/campaign-logo";
 import { nav, site } from "@/lib/site";
 
-/** Carysil red bar. Slides away while scrolling down, comes back on scroll up. */
+/**
+ * Dark glass bar with the campaign lockup (after the sternhagen.com header). Slides away
+ * while scrolling down, comes back on scroll up.
+ */
 export function SiteHeader() {
   const [hidden, setHidden] = useState(false);
+  const progress = useRef<HTMLSpanElement>(null);
   const [open, setOpen] = useState(false);
   const lastY = useRef(0);
   const wasOpen = useRef(false);
@@ -18,6 +22,8 @@ export function SiteHeader() {
   useEffect(() => {
     const onScroll = () => {
       const y = window.scrollY;
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      if (progress.current) progress.current.style.transform = `scaleX(${max > 0 ? y / max : 0})`;
       const delta = y - lastY.current;
       if (Math.abs(delta) > 6) {
         setHidden(delta > 0 && y > 160);
@@ -41,26 +47,26 @@ export function SiteHeader() {
 
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-50 bg-red text-cream shadow-[0_1px_0_rgba(0,0,0,0.25)] transition-transform duration-500 ease-[var(--ease-expo)] ${
+      className={`fixed inset-x-0 top-0 z-50 border-b border-white/[0.06] bg-ink/75 text-cream backdrop-blur-xl transition-transform duration-500 ease-[var(--ease-expo)] ${
         hidden && !open ? "-translate-y-full" : ""
       }`}
     >
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:h-[4.5rem] lg:px-10">
         <Link
           href="/"
-          aria-label={`${site.brand} home`}
+          aria-label={`${site.brand}: ${site.campaign}, home`}
           className="transition-opacity hover:opacity-85"
           onClick={() => setOpen(false)}
         >
-          <CarysilLogo markClass="h-[15px] md:h-[18px]" />
+          <CampaignLogo variant="white" title={null} className="w-[8.5rem] md:w-[10rem]" />
         </Link>
 
-        <nav aria-label="Main" className="hidden items-center gap-9 lg:flex">
-          {nav.slice(0, -1).map((item) => (
+        <nav aria-label="Main" className="hidden items-center gap-6 lg:flex xl:gap-9">
+          {nav.slice(0, -1).map((item, i) => (
             <Link
               key={item.href}
               href={item.href}
-              className="group relative py-1 text-[0.82rem] font-medium tracking-wide text-cream/85 transition-colors hover:text-cream"
+              className={`group relative py-1 ${i === 2 || i === 3 ? "hidden xl:inline-block" : ""} text-[0.68rem] font-medium tracking-[0.18em] text-cream/75 uppercase transition-colors hover:text-cream`}
             >
               {item.label}
               <span className="absolute inset-x-0 -bottom-0.5 h-px origin-right scale-x-0 bg-cream transition-transform duration-500 ease-[var(--ease-expo)] group-hover:origin-left group-hover:scale-x-100" />
@@ -70,9 +76,11 @@ export function SiteHeader() {
             href="/promo"
             data-magnetic
             aria-current={pathname === "/promo" ? "page" : undefined}
-            className="rounded-full bg-cream px-5 py-2.5 text-[0.82rem] font-semibold text-red transition-colors hover:bg-white"
+            className="btn btn-red px-5 py-3"
           >
-            Launch offer
+            <span className="roll">
+              <span data-text="Launch offer">Launch offer</span>
+            </span>
           </Link>
         </nav>
 
@@ -96,7 +104,7 @@ export function SiteHeader() {
       <div
         id="mobile-menu"
         hidden={!open}
-        className="h-[calc(100dvh-4rem)] overflow-y-auto border-t border-cream/15 bg-red px-4 pt-6 pb-10 lg:hidden"
+        className="h-[calc(100dvh-4rem)] overflow-y-auto border-t border-cream/10 bg-ink px-4 pt-6 pb-10 lg:hidden"
       >
         <nav aria-label="Mobile" className="flex flex-col">
           {nav.map((item, i) => (
@@ -104,15 +112,24 @@ export function SiteHeader() {
               key={item.href}
               href={item.href}
               onClick={() => setOpen(false)}
-              className="animate-[rise_0.8s_var(--ease-expo)_both] border-b border-cream/15 py-5 font-display text-4xl text-cream"
+              className="title animate-[rise_0.8s_var(--ease-expo)_both] border-b border-cream/10 py-5 text-4xl text-cream"
               style={{ animationDelay: `${80 + i * 70}ms` } as CSSProperties}
             >
               {item.label}
             </Link>
           ))}
         </nav>
-        <p className="font-display mt-10 text-xl text-cream/80 italic">{site.campaign}</p>
+        <p className="eyebrow mt-10 text-cream/60">
+          {site.collection} × {site.ambassador.name}
+        </p>
       </div>
+
+      {/* Reading progress */}
+      <span
+        ref={progress}
+        aria-hidden="true"
+        className="absolute inset-x-0 bottom-0 h-px origin-left scale-x-0 bg-brass"
+      />
     </header>
   );
 }

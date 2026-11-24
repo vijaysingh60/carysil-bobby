@@ -64,6 +64,8 @@ export function SmoothScroll() {
       if (target) lenis.scrollTo(target, { offset: -72, immediate: true, force: true });
       else lenis.scrollTo(0, { immediate: true, force: true });
       ScrollTrigger.refresh();
+      // Scrubbed scenes keep their pre-refresh state until the next update; nudge them.
+      requestAnimationFrame(() => ScrollTrigger.update());
     });
   }, [pathname]);
 
