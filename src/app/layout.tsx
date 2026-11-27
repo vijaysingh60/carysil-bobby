@@ -29,7 +29,7 @@ const barlow = Barlow({
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
-    default: `${site.collection} × ${site.ambassador.name} | ${site.campaign}`,
+    default: `${site.campaign} | ${site.collection} × ${site.ambassador.name}`,
     template: `%s | ${site.campaign}`,
   },
   description: `${site.tagline} ${site.description}`,
@@ -42,8 +42,8 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#0f0d0b",
-  colorScheme: "dark",
+  themeColor: "#f7f3ec",
+  colorScheme: "light",
 };
 
 /**
@@ -63,7 +63,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <head>
         <script dangerouslySetInnerHTML={{ __html: bootScript }} />
       </head>
-      <body className="min-h-dvh">
+      {/* suppressHydrationWarning: browser extensions (e.g. ColorZilla's cz-shortcut-listen) add
+          attributes to <body> before React hydrates. */}
+      <body className="min-h-dvh" suppressHydrationWarning>
         <IntroSignature />
         <a
           href="#main"

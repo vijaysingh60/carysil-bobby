@@ -33,6 +33,10 @@ export function Cursor() {
       const next = target?.dataset.cursor ?? null;
       if (next === current) return;
       current = next;
+      // Cancel the previous swell/shrink, including a label fade-in still waiting on its
+      // delay, so a quick in-and-out never leaves the label showing on the small dot.
+      gsap.killTweensOf(el, "width,height");
+      gsap.killTweensOf(text);
       if (next) {
         text.textContent = next;
         gsap.to(el, { width: 92, height: 92, duration: 0.5, ease: "expo.out" });

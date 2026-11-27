@@ -32,7 +32,7 @@ export function Countdown({ endsAt }: { endsAt: string }) {
   }, [target]);
 
   if (parts === null) {
-    return <p className="font-display text-2xl text-ember">This offer has ended.</p>;
+    return <p className="font-display text-2xl text-red">This offer has ended.</p>;
   }
 
   const cells: [string, number | undefined][] = [
@@ -47,17 +47,17 @@ export function Countdown({ endsAt }: { endsAt: string }) {
       {cells.map(([label, value]) => (
         <div
           key={label}
-          className="min-w-[4.25rem] border border-bone/15 bg-ink/50 px-3 py-3 text-center backdrop-blur-md sm:min-w-[5.25rem]"
+          className="min-w-[4.25rem] border border-graphite/15 bg-white/80 px-3 py-3 text-center backdrop-blur-md sm:min-w-[5.25rem]"
         >
           <span
-            className="font-display block overflow-hidden text-3xl font-extralight tabular-nums text-bone sm:text-4xl"
+            className="font-display block overflow-hidden text-3xl font-extralight tabular-nums text-graphite sm:text-4xl"
             aria-hidden={label === "Seconds"}
           >
             <span key={value ?? "x"} className={value === undefined ? "" : "tick"}>
               {value === undefined ? "--" : String(value).padStart(2, "0")}
             </span>
           </span>
-          <span className="eyebrow mt-1 block text-[0.6rem] text-muted">{label}</span>
+          <span className="eyebrow mt-1 block text-[0.6rem] text-graphite-soft">{label}</span>
         </div>
       ))}
     </div>

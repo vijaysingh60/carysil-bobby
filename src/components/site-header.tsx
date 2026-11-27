@@ -8,7 +8,7 @@ import { CampaignLogo } from "@/components/campaign-logo";
 import { nav, site } from "@/lib/site";
 
 /**
- * Dark glass bar with the campaign lockup (after the sternhagen.com header). Slides away
+ * Light glass bar with the campaign lockup (after the sternhagen.com header). Slides away
  * while scrolling down, comes back on scroll up.
  */
 export function SiteHeader() {
@@ -47,7 +47,7 @@ export function SiteHeader() {
 
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-50 border-b border-white/[0.06] bg-ink/75 text-cream backdrop-blur-xl transition-transform duration-500 ease-[var(--ease-expo)] ${
+      className={`fixed inset-x-0 top-0 z-50 border-b border-graphite/10 bg-cream/85 text-graphite backdrop-blur-xl transition-transform duration-500 ease-[var(--ease-expo)] ${
         hidden && !open ? "-translate-y-full" : ""
       }`}
     >
@@ -58,7 +58,7 @@ export function SiteHeader() {
           className="transition-opacity hover:opacity-85"
           onClick={() => setOpen(false)}
         >
-          <CampaignLogo variant="white" title={null} className="w-[8.5rem] md:w-[10rem]" />
+          <CampaignLogo variant="light" title={null} className="w-[8.5rem] md:w-[10rem]" />
         </Link>
 
         <nav aria-label="Main" className="hidden items-center gap-6 lg:flex xl:gap-9">
@@ -66,10 +66,10 @@ export function SiteHeader() {
             <Link
               key={item.href}
               href={item.href}
-              className={`group relative py-1 ${i === 2 || i === 3 ? "hidden xl:inline-block" : ""} text-[0.68rem] font-medium tracking-[0.18em] text-cream/75 uppercase transition-colors hover:text-cream`}
+              className={`group relative py-1 ${i === 2 || i === 3 ? "hidden xl:inline-block" : ""} text-[0.68rem] font-medium tracking-[0.18em] text-graphite/70 uppercase transition-colors hover:text-graphite`}
             >
               {item.label}
-              <span className="absolute inset-x-0 -bottom-0.5 h-px origin-right scale-x-0 bg-cream transition-transform duration-500 ease-[var(--ease-expo)] group-hover:origin-left group-hover:scale-x-100" />
+              <span className="absolute inset-x-0 -bottom-0.5 h-px origin-right scale-x-0 bg-red transition-transform duration-500 ease-[var(--ease-expo)] group-hover:origin-left group-hover:scale-x-100" />
             </Link>
           ))}
           <Link
@@ -93,10 +93,10 @@ export function SiteHeader() {
           onClick={() => setOpen((v) => !v)}
         >
           <span
-            className={`absolute h-px w-6 bg-cream transition-transform duration-300 ${open ? "rotate-45" : "-translate-y-1"}`}
+            className={`absolute h-px w-6 bg-graphite transition-transform duration-300 ${open ? "rotate-45" : "-translate-y-1"}`}
           />
           <span
-            className={`absolute h-px w-6 bg-cream transition-transform duration-300 ${open ? "-rotate-45" : "translate-y-1"}`}
+            className={`absolute h-px w-6 bg-graphite transition-transform duration-300 ${open ? "-rotate-45" : "translate-y-1"}`}
           />
         </button>
       </div>
@@ -104,7 +104,7 @@ export function SiteHeader() {
       <div
         id="mobile-menu"
         hidden={!open}
-        className="h-[calc(100dvh-4rem)] overflow-y-auto border-t border-cream/10 bg-ink px-4 pt-6 pb-10 lg:hidden"
+        className="h-[calc(100dvh-4rem)] overflow-y-auto border-t border-graphite/10 bg-cream px-4 pt-6 pb-10 lg:hidden"
       >
         <nav aria-label="Mobile" className="flex flex-col">
           {nav.map((item, i) => (
@@ -112,14 +112,14 @@ export function SiteHeader() {
               key={item.href}
               href={item.href}
               onClick={() => setOpen(false)}
-              className="title animate-[rise_0.8s_var(--ease-expo)_both] border-b border-cream/10 py-5 text-4xl text-cream"
+              className="title animate-[rise_0.8s_var(--ease-expo)_both] border-b border-graphite/10 py-5 text-4xl text-graphite"
               style={{ animationDelay: `${80 + i * 70}ms` } as CSSProperties}
             >
               {item.label}
             </Link>
           ))}
         </nav>
-        <p className="eyebrow mt-10 text-cream/60">
+        <p className="eyebrow mt-10 text-graphite-soft">
           {site.collection} × {site.ambassador.name}
         </p>
       </div>
@@ -128,7 +128,7 @@ export function SiteHeader() {
       <span
         ref={progress}
         aria-hidden="true"
-        className="absolute inset-x-0 bottom-0 h-px origin-left scale-x-0 bg-brass"
+        className="absolute inset-x-0 bottom-0 h-px origin-left scale-x-0 bg-red"
       />
     </header>
   );

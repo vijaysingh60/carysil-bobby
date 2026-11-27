@@ -59,9 +59,9 @@ export const offer = {
 
 export const nav = [
   { href: "/#collection", label: "The collection" },
+  { href: "/#products", label: "Product list" },
   { href: "/#host", label: "The host" },
   { href: "/#day", label: "A day outside" },
-  { href: "/#products", label: "Product list" },
   { href: "/#visit", label: "Experience centres" },
   { href: "/promo", label: "Launch offer" },
 ] as const;

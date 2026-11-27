@@ -2,8 +2,9 @@
 @import "lenis/dist/lenis.css";
 
 /*
- * The Farmhouse Collection: the campaign lockup's red (#890606) on warm black, a paper
- * cream taken from Sternhagen's "Ode to Germany", and brass from the Magic faucet.
+ * The Farmhouse Collection, in daylight: white and beige surfaces (a paper cream taken from
+ * Sternhagen's "Ode to Germany"), graphite type, the campaign lockup's red (#890606) as the
+ * accent and brass from the Magic faucet. No black surfaces.
  * Type follows carysil.com (Archivo + Barlow); Barlow light in caps stands in for the
  * DIN headings on sternhagen.com.
  */
@@ -56,8 +57,8 @@ html {
 }
 
 body {
-  background: var(--color-ink);
-  color: var(--color-bone);
+  background: var(--color-paper);
+  color: var(--color-graphite);
   font-family: var(--font-sans);
   font-weight: 400;
   -webkit-font-smoothing: antialiased;
@@ -70,7 +71,7 @@ body {
 }
 
 :focus-visible {
-  outline: 2px solid var(--color-ember);
+  outline: 2px solid var(--color-red);
   outline-offset: 3px;
 }
 
@@ -185,7 +186,7 @@ body {
   color: var(--color-cream);
 }
 .btn-red::before {
-  background: var(--color-ink);
+  background: var(--color-red-deep);
 }
 .btn-line {
   border: 1px solid color-mix(in oklab, var(--color-cream) 55%, transparent);
@@ -211,7 +212,7 @@ body {
   color: var(--color-red);
 }
 .btn-cream::before {
-  background: var(--color-ink);
+  background: var(--color-red-deep);
 }
 .btn-cream:hover,
 .btn-cream:focus-visible {
@@ -219,7 +220,7 @@ body {
 }
 .btn-brass {
   background: var(--color-brass);
-  color: var(--color-ink);
+  color: var(--color-graphite);
 }
 .btn-brass::before {
   background: var(--color-cream);
@@ -270,9 +271,9 @@ body {
 }
 
 /* ─────────────────────────── Signature intro ───────────────────────────
-   Pure CSS, so it runs and clears itself even before (or without) JS. On warm black,
+   Pure CSS, so it runs and clears itself even before (or without) JS. On a white sheet,
    "Live The" writes itself on, CARYSIL rises letter by letter, "life" signs off,
-   then the black lifts away like a sheet. .intro-seen (set by the boot script on
+   then the sheet lifts away. .intro-seen (set by the boot script on
    later page views this session) skips it. */
 .sig {
   position: fixed;
@@ -280,7 +281,7 @@ body {
   z-index: 100;
   display: grid;
   place-items: center;
-  background: var(--color-ink);
+  background: var(--color-cream);
   clip-path: inset(0 0 0 0);
   animation:
     sig-lift 1.1s var(--ease-curtain) 2.55s forwards,
@@ -308,7 +309,7 @@ body {
   height: 1px;
   margin: 2.2rem auto 0;
   width: min(14rem, 40vw);
-  background: color-mix(in oklab, var(--color-bone) 35%, transparent);
+  background: color-mix(in oklab, var(--color-graphite) 30%, transparent);
   transform: scaleX(0);
   animation: rule-in 1.4s var(--ease-curtain) 1.2s forwards;
 }
@@ -318,7 +319,7 @@ body {
   bottom: 1.25rem;
   display: flex;
   justify-content: space-between;
-  color: color-mix(in oklab, var(--color-bone) 60%, transparent);
+  color: var(--color-graphite-soft);
   opacity: 0;
   animation: fade-in 0.8s ease 0.6s forwards;
 }
@@ -570,62 +571,32 @@ html.motion-on .marquee-track {
   animation: spin 22s linear infinite;
 }
 
-/* ─────────────────────────── Farmhouse hero ───────────────────────────
-   Timber louvres swing open on the kitchen while it settles from a slight zoom and the
-   title rises; GSAP then pushes the camera through the pergola into Bobby. Everything
-   here is transform/opacity only. Without motion none of it shows and the hero is the
-   finished frame. */
-.hp-title,
-.hp-louvres {
-  display: none;
+/* ─────────────────────────── Hero ───────────────────────────
+   After the intro, Bobby's photo settles from a slight zoom and the lockup signs itself
+   with the intro's pen strokes. Transforms and small clip-paths only. */
+.hero-settle {
+  animation: hero-settle 2.8s var(--ease-out-soft) calc(var(--intro-delay) - 0.4s) both;
 }
-html.motion-ok .hp-title {
-  display: block;
-}
-html.motion-ok .hp-louvres {
-  display: flex;
-  flex-direction: column;
-  perspective: 1600px;
-  animation: intro-gone 0s linear calc(var(--intro-delay) + 2.7s) forwards;
-}
-.hp-louvre {
-  flex: 1;
-  margin-bottom: -1px; /* no hairline seams between slats */
-  background: linear-gradient(180deg, #221d18 0%, var(--color-ink) 55%, #2b241d 100%);
-  box-shadow: inset 0 -1px 0 rgb(201 166 107 / 0.18);
-  transform-origin: 50% 0%;
-  backface-visibility: hidden;
-  animation: louvre-open 1.3s var(--ease-curtain) calc(var(--intro-delay) + 0.5s + var(--s, 0) * 0.07s) forwards;
-}
-@keyframes louvre-open {
-  to {
-    transform: rotateX(-90deg);
+@keyframes hero-settle {
+  from {
+    transform: scale(1.12);
   }
-}
-html.motion-ok .hp-settle {
-  transform: scale(1.12);
-  transform-origin: 56.6% 41.5%; /* the pergola opening, so the camera's aim never drifts */
-  animation: hp-settle 2.8s var(--ease-out-soft) calc(var(--intro-delay) + 0.6s) forwards;
-}
-@keyframes hp-settle {
   to {
     transform: none;
   }
 }
-.hp-letter {
-  display: inline-block;
-  transform: translateY(108%);
-  animation: rise-in 1.3s var(--ease-expo) calc(var(--intro-delay) + 1.05s + var(--i, 0) * 0.035s) forwards;
+.hero-sign :is([data-logo-live], [data-logo-life]) {
+  clip-path: inset(-40% 100% -40% 0);
 }
-.hp-fade {
-  opacity: 0;
-  animation: fade-in 1.1s ease calc(var(--intro-delay) + 1.1s) forwards;
+.hero-sign [data-logo-live] {
+  animation: pen 1s var(--ease-pen) calc(var(--intro-delay) + 0.1s) forwards;
 }
-html.motion-ok [data-hp-bobby] {
-  opacity: 0;
+.hero-sign [data-logo-letter] {
+  transform: translateY(48px);
+  animation: rise-in 0.95s var(--ease-expo) calc(var(--intro-delay) + 0.45s + var(--l, 0) * 0.06s) forwards;
 }
-html.motion-ok [data-hp-in] {
-  opacity: 0;
+.hero-sign [data-logo-life] {
+  animation: pen 0.75s var(--ease-pen) calc(var(--intro-delay) + 1.05s) forwards;
 }
 
 /* Desktop-only pinned scenes (the sideways gallery): on touch screens they stay a normal
@@ -658,7 +629,7 @@ html.motion-ok .focus-word {
 
 /* Product stage: warm glow behind each piece. */
 .stage-glow {
-  background: radial-gradient(closest-side, rgb(201 166 107 / 0.3), rgb(137 6 6 / 0.12) 55%, transparent 78%);
+  background: radial-gradient(closest-side, rgb(201 166 107 / 0.26), rgb(230 221 207 / 0.55) 52%, transparent 78%);
 }
 html.motion-ok [data-st-item] ~ [data-st-item] {
   opacity: 0;

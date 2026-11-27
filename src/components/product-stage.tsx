@@ -12,7 +12,7 @@ const STEP = 2; // timeline seconds per product
 const n = stage.length;
 
 /**
- * The collection, one piece at a time, on a dark stage (after the product section of
+ * The collection, one piece at a time, on a white stage (after the product section of
  * Sternhagen's Shü page): a warm glow and turning rings behind the piece, the name
  * rising out of a mask, and callouts that slide in from both sides with a rule drawn
  * toward the product. The stage pins while the six pieces hand over to each other.
@@ -104,31 +104,31 @@ export function ProductStage() {
 
   return (
     <section id="collection" aria-label="The collection">
-      <div ref={root} className="scene motion-only relative bg-ink text-bone" style={{ "--scene-length": `${n * 80}svh` } as CSSProperties}>
+      <div ref={root} className="scene motion-only relative bg-white text-graphite" style={{ "--scene-length": `${n * 80}svh` } as CSSProperties}>
         <div className="scene-stage">
           {/* Glow and rings behind every piece */}
           <div className="pointer-events-none absolute top-[62%] left-1/2 size-[min(120vw,120svh)] -translate-x-1/2 -translate-y-1/2 lg:top-[64%]">
             <div className="stage-glow absolute inset-0" />
             <div data-st-rings className="absolute inset-[16%]">
-              <div className="spin-slow absolute inset-0 rounded-full border border-brass/20" />
-              <div className="absolute inset-[9%] rounded-full border border-dashed border-brass/25 [animation:spin_40s_linear_infinite_reverse]" />
-              <div className="absolute inset-[22%] rounded-full border border-cream/[0.06]" />
+              <div className="spin-slow absolute inset-0 rounded-full border border-brass/35" />
+              <div className="absolute inset-[9%] rounded-full border border-dashed border-brass/40 [animation:spin_40s_linear_infinite_reverse]" />
+              <div className="absolute inset-[22%] rounded-full border border-graphite/[0.07]" />
             </div>
           </div>
 
           {/* Header row */}
           <div className="absolute inset-x-0 top-[calc(4rem+2svh)] z-10 px-4 sm:px-6 lg:top-[calc(4.5rem+3svh)] lg:px-10">
             <div className="mx-auto flex max-w-7xl items-center justify-between gap-6">
-              <p className="kicker text-[0.62rem] text-stone">The collection</p>
+              <p className="kicker kicker-light text-[0.62rem] text-graphite-soft">The collection</p>
               <div className="flex items-center gap-4">
-                <p className="font-sans text-sm text-cream tabular-nums">
+                <p className="font-sans text-sm text-graphite tabular-nums">
                   <span data-st-count>01</span>
-                  <span className="text-stone"> / {pad(n)}</span>
+                  <span className="text-graphite-soft"> / {pad(n)}</span>
                 </p>
                 <div className="hidden w-40 gap-1 sm:flex">
                   {stage.map((p) => (
-                    <span key={p.id} className="h-px flex-1 overflow-hidden bg-cream/15">
-                      <span data-st-fill className="block h-full origin-left scale-x-0 bg-brass" />
+                    <span key={p.id} className="h-px flex-1 overflow-hidden bg-graphite/15">
+                      <span data-st-fill className="block h-full origin-left scale-x-0 bg-red" />
                     </span>
                   ))}
                 </div>
@@ -143,25 +143,25 @@ export function ProductStage() {
       </div>
 
       {/* Still: the same pieces as a list */}
-      <div className="still-only bg-ink px-4 py-24 sm:px-6 lg:px-10">
+      <div className="still-only bg-white px-4 py-24 sm:px-6 lg:px-10">
         <div className="mx-auto max-w-7xl">
-          <p className="kicker text-stone">The collection</p>
-          <ul className="mt-12 grid gap-px overflow-hidden rounded-2xl bg-line sm:grid-cols-2 lg:grid-cols-3">
+          <p className="kicker kicker-light text-graphite-soft">The collection</p>
+          <ul className="mt-12 grid gap-px overflow-hidden rounded-2xl bg-graphite/10 sm:grid-cols-2 lg:grid-cols-3">
             {stage.map((p) => (
-              <li key={p.id} className="bg-char p-8">
+              <li key={p.id} className="bg-cream p-8">
                 <div className="relative mx-auto h-56">
                   <Image src={p.image} alt={p.name} fill sizes="(min-width: 1024px) 30vw, 90vw" className="object-contain" />
                 </div>
-                <p className="eyebrow mt-8 text-[0.6rem] text-brass">{p.type}</p>
-                <h3 className="title mt-3 text-3xl text-cream">{p.name}</h3>
-                <ul className="mt-4 space-y-1 text-sm text-sand/80">
+                <p className="eyebrow mt-8 text-[0.6rem] text-brass-deep">{p.type}</p>
+                <h3 className="title mt-3 text-3xl text-graphite">{p.name}</h3>
+                <ul className="mt-4 space-y-1 text-sm text-graphite-soft">
                   {p.callouts.map((c) => (
                     <li key={c.title}>
-                      <span className="text-cream">{c.title}</span> · {c.body}
+                      <span className="text-graphite">{c.title}</span> · {c.body}
                     </li>
                   ))}
                 </ul>
-                <p className="mt-6 text-sm text-stone">MRP {p.mrp}</p>
+                {p.available && <p className="mt-6 text-sm text-red">{p.available}</p>}
               </li>
             ))}
           </ul>
@@ -181,15 +181,15 @@ function StageItem({ p, i }: { p: StageProduct; i: number }) {
     <article data-st-item aria-label={p.name} className="absolute inset-0">
       {/* Name */}
       <div className="absolute inset-x-0 top-[calc(4rem+9svh)] px-4 text-center sm:px-6 lg:top-[calc(4.5rem+10svh)]">
-        <p data-st-meta className="eyebrow text-[0.6rem] text-brass sm:text-[0.66rem]">
+        <p data-st-meta className="eyebrow text-[0.6rem] text-brass-deep sm:text-[0.66rem]">
           {pad(i + 1)} · {p.type}
         </p>
         <h3 className="mt-3 overflow-hidden pb-[0.05em]">
-          <span data-st-name className="title block text-[clamp(2.3rem,6.4vw,6.2rem)] text-cream">
+          <span data-st-name className="title block text-[clamp(2.3rem,6.4vw,6.2rem)] text-graphite">
             {p.name}
           </span>
         </h3>
-        <p data-st-meta className="mx-auto mt-3 max-w-md text-[0.95rem] text-sand/75 sm:text-base">
+        <p data-st-meta className="mx-auto mt-3 max-w-md text-[0.95rem] text-graphite-soft sm:text-base">
           {p.line}
         </p>
       </div>
@@ -205,7 +205,7 @@ function StageItem({ p, i }: { p: StageProduct; i: number }) {
             alt={p.name}
             fill
             sizes="(min-width: 1024px) 46vw, 78vw"
-            className="object-contain drop-shadow-[0_30px_60px_rgba(0,0,0,0.55)]"
+            className="object-contain drop-shadow-[0_30px_50px_rgba(90,70,40,0.22)]"
           />
         </div>
       </div>
@@ -226,7 +226,7 @@ function StageItem({ p, i }: { p: StageProduct; i: number }) {
           <li
             key={c.title}
             data-st-callout={ci < half ? "l" : "r"}
-            className="rounded-full border border-brass/30 bg-ink/60 px-3 py-1.5 text-[0.72rem] text-sand backdrop-blur"
+            className="rounded-full border border-graphite/15 bg-white/80 px-3 py-1.5 text-[0.72rem] text-graphite backdrop-blur"
           >
             {c.title}
           </li>
@@ -235,22 +235,24 @@ function StageItem({ p, i }: { p: StageProduct; i: number }) {
 
       {/* Footer row */}
       <div className="absolute inset-x-0 bottom-5 px-4 sm:px-6 lg:bottom-8 lg:px-10">
-        <div className="mx-auto flex max-w-7xl items-center justify-between gap-6">
-          <p data-st-foot className="text-sm text-sand/80">
-            <span className="eyebrow mr-2 text-[0.58rem] text-stone">MRP</span>
-            {p.mrp}
-          </p>
-          <Link
-            data-st-foot
-            href="/promo#book"
-            className="group inline-flex items-center gap-2 text-sm text-cream"
-            aria-label={`Enquire about the ${p.name}`}
-          >
-            Enquire
-            <span aria-hidden="true" className="transition-transform duration-500 ease-[var(--ease-expo)] group-hover:translate-x-1">
-              →
-            </span>
-          </Link>
+        <div className="mx-auto flex max-w-7xl items-center justify-end gap-6">
+          {p.available ? (
+            <p data-st-foot className="rounded-full bg-red px-3.5 py-1.5 text-[0.72rem] font-medium tracking-[0.06em] text-cream">
+              {p.available}
+            </p>
+          ) : (
+            <Link
+              data-st-foot
+              href="/promo#book"
+              className="group inline-flex items-center gap-2 text-sm text-graphite"
+              aria-label={`Enquire about the ${p.name}`}
+            >
+              Enquire
+              <span aria-hidden="true" className="transition-transform duration-500 ease-[var(--ease-expo)] group-hover:translate-x-1">
+                →
+              </span>
+            </Link>
+          )}
         </div>
       </div>
     </article>
@@ -264,18 +266,18 @@ function Callout({ c, side }: { c: { title: string; body: string }; side: "l" | 
       <span
         data-st-rule
         aria-hidden="true"
-        className={`absolute top-[0.8rem] h-px w-[3.2vw] bg-brass/45 ${
+        className={`absolute top-[0.8rem] h-px w-[3.2vw] bg-brass-deep/45 ${
           side === "l" ? "left-[calc(100%+1rem)] origin-left" : "right-[calc(100%+1rem)] origin-right"
         }`}
       >
         <span
-          className={`absolute top-1/2 size-2 -translate-y-1/2 rounded-full bg-brass ${
+          className={`absolute top-1/2 size-2 -translate-y-1/2 rounded-full bg-brass-deep ${
             side === "l" ? "right-0 translate-x-1/2" : "left-0 -translate-x-1/2"
           }`}
         />
       </span>
-      <p className="text-[1.05rem] font-medium text-cream">{c.title}</p>
-      <p className="mt-1 text-sm leading-relaxed text-sand/70">{c.body}</p>
+      <p className="text-[1.05rem] font-medium text-graphite">{c.title}</p>
+      <p className="mt-1 text-sm leading-relaxed text-graphite-soft">{c.body}</p>
     </li>
   );
 }

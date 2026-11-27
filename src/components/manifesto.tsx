@@ -53,19 +53,19 @@ export function Manifesto() {
   });
 
   return (
-    <section ref={root} id="story" className="relative overflow-hidden bg-ink text-bone">
+    <section ref={root} id="story" className="relative overflow-hidden bg-cream text-graphite">
       <div className="mx-auto max-w-7xl px-4 pt-28 pb-20 sm:px-6 lg:px-10 lg:pt-40 lg:pb-28">
-        <div className="eyebrow flex flex-wrap justify-between gap-4 text-[0.62rem] text-stone">
+        <div className="eyebrow flex flex-wrap justify-between gap-4 text-[0.62rem] text-graphite-soft">
           <p>A new collection by Carysil</p>
           <p>
-            Introducing <span className="text-brass">{collection.name}</span>
+            Introducing <span className="text-red">{collection.name}</span>
           </p>
         </div>
         <p data-focus className="mt-14 max-w-6xl text-[clamp(2rem,4.8vw,4.4rem)] leading-[1.08] font-light tracking-[-0.01em] lg:mt-20">
           {words.map((w, i) => (
             <Fragment key={i}>
               {i > 0 && " "}
-              <span className={`focus-word ${w.lit ? "text-brass" : ""}`}>{w.text}</span>
+              <span className={`focus-word ${w.lit ? "text-red" : ""}`}>{w.text}</span>
             </Fragment>
           ))}
         </p>
@@ -85,27 +85,27 @@ export function Manifesto() {
           </div>
         </figure>
         <div className="lg:max-w-md">
-          <h2 data-split className="text-[clamp(2rem,3.8vw,3.3rem)] leading-[1.05] font-light text-cream">
+          <h2 data-split className="text-[clamp(2rem,3.8vw,3.3rem)] leading-[1.05] font-light text-graphite">
             For those who host.
           </h2>
-          <p data-reveal className="mt-8 text-[1.05rem] leading-relaxed text-sand/85">
+          <p data-reveal className="mt-8 text-[1.05rem] leading-relaxed text-graphite-soft">
             {collection.name} is Carysil&rsquo;s outdoor kitchen for long weekends and longer tables: granite under the
             tap, brass on the faucet, steel on the grill and timber on the wine shelves.
           </p>
-          <p data-reveal className="mt-5 text-[1.05rem] leading-relaxed text-sand/85">
+          <p data-reveal className="mt-5 text-[1.05rem] leading-relaxed text-graphite-soft">
             The materials of a working farmhouse, finished to Carysil&rsquo;s German-engineered standard, so cooking outside
             becomes the main event rather than the overflow.
           </p>
-          <p data-reveal className="eyebrow mt-10 flex items-center gap-3 text-[0.62rem] text-brass">
-            <span aria-hidden="true" className="h-px w-10 bg-brass/60" />
+          <p data-reveal className="eyebrow mt-10 flex items-center gap-3 text-[0.62rem] text-red">
+            <span aria-hidden="true" className="h-px w-10 bg-red/60" />
             Live the Carysil life
           </p>
         </div>
       </div>
 
       {/* Outlined band that slides with the scroll */}
-      <div aria-hidden="true" className="border-y border-line/70 py-6 lg:py-8">
-        <div data-mf-band className="flex w-max items-center gap-10 text-[clamp(3rem,9vw,8.5rem)] leading-none text-brass/80 lg:gap-16">
+      <div aria-hidden="true" className="border-y border-graphite/10 py-6 lg:py-8">
+        <div data-mf-band className="flex w-max items-center gap-10 text-[clamp(3rem,9vw,8.5rem)] leading-none text-brass-deep/70 lg:gap-16">
           {[...band, ...band, ...band].map((w, i) => (
             <Fragment key={i}>
               <span className="outline-text title whitespace-nowrap">{w}</span>

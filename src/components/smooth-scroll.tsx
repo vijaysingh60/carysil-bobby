@@ -64,8 +64,11 @@ export function SmoothScroll() {
       if (target) lenis.scrollTo(target, { offset: -72, immediate: true, force: true });
       else lenis.scrollTo(0, { immediate: true, force: true });
       ScrollTrigger.refresh();
-      // Scrubbed scenes keep their pre-refresh state until the next update; nudge them.
-      requestAnimationFrame(() => ScrollTrigger.update());
+      // Scrubbed scenes keep whatever state they were in before the jump (e.g. a scroll that
+      // landed before hydration), so snap each one to where the page now is.
+      ScrollTrigger.getAll().forEach((st) => {
+        if (st.vars.scrub && st.animation) st.animation.progress(st.progress);
+      });
     });
   }, [pathname]);
 

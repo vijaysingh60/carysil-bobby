@@ -13,7 +13,7 @@ gsap.registerPlugin(Flip);
 type Group = (typeof productGroups)[number]["id"];
 
 /**
- * Product List 2027: every piece in the catalogue with its MRP, filterable by group
+ * Product List 2027: every piece in the catalogue, filterable by group
  * (after the product grid on "Ode to Germany"). Changing the filter reflows the grid
  * with GSAP Flip: staying cards glide to their new places, others fade in or out.
  */
@@ -80,7 +80,7 @@ export function ProductIndex() {
                 aria-pressed={group === g.id}
                 onClick={() => choose(g.id)}
                 className={`rounded-full border px-4 py-2 text-sm transition-colors duration-500 ${
-                  group === g.id ? "border-graphite bg-graphite text-cream" : "border-graphite/20 hover:border-graphite/60"
+                  group === g.id ? "border-red bg-red text-cream" : "border-graphite/20 hover:border-graphite/60"
                 }`}
               >
                 {g.label} <span className="ml-1 text-[0.75em] opacity-60 tabular-nums">{count(g.id)}</span>
@@ -96,10 +96,15 @@ export function ProductIndex() {
               <li key={p.id} data-pi-card data-flip-id={p.id} className={shown ? "" : "hidden"}>
                 <Link
                   href="/promo#book"
-                  data-cursor="Enquire"
+                  data-cursor={p.available ? "January" : "Enquire"}
                   className="group block overflow-hidden rounded-[10px] bg-cream transition-shadow duration-700 hover:shadow-[0_30px_60px_-30px_rgba(44,45,48,0.35)]"
                 >
                   <div className={`relative aspect-[4/3] overflow-hidden ${p.photo ? "" : "bg-[radial-gradient(closest-side,#fff,transparent)]"}`}>
+                    {p.available && (
+                      <span className="absolute top-3 left-3 z-10 rounded-full bg-red px-3 py-1 text-[0.68rem] font-medium tracking-[0.06em] text-cream">
+                        {p.available}
+                      </span>
+                    )}
                     <div className={`absolute ${p.photo ? "inset-0" : "inset-[12%]"} transition-transform duration-[1200ms] ease-[var(--ease-expo)] group-hover:scale-[1.06]`}>
                       <Image
                         src={p.image}
@@ -115,19 +120,17 @@ export function ProductIndex() {
                       <p className="text-[1.05rem] font-medium">{p.name}</p>
                       <p className="mt-1 text-sm text-graphite-soft">{p.type}</p>
                     </div>
-                    <p className="shrink-0 text-right">
-                      <span className="eyebrow block text-[0.56rem] text-graphite-soft">MRP</span>
-                      <span className="mt-1 block text-[0.95rem] tabular-nums">{p.mrp}</span>
-                    </p>
+                    {!p.available && (
+                      <span className="shrink-0 text-sm text-graphite-soft transition-colors duration-500 group-hover:text-red">
+                        Enquire <span aria-hidden="true">→</span>
+                      </span>
+                    )}
                   </div>
                 </Link>
               </li>
             );
           })}
         </ul>
-        <p className="mt-8 text-xs text-graphite-soft">
-          Prices are MRPs from the {collection.name} product list {collection.year}.
-        </p>
       </div>
     </section>
   );

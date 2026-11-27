@@ -1,7 +1,7 @@
 import { BbqBlueprint } from "@/components/bbq-blueprint";
 import { DayGallery } from "@/components/day-gallery";
 import { ExperienceCentres } from "@/components/experience-centres";
-import { HeroPortal } from "@/components/hero-portal";
+import { Hero } from "@/components/hero";
 import { HostBanners } from "@/components/host-banners";
 import { LightSwitcher } from "@/components/light-switcher";
 import { Manifesto } from "@/components/manifesto";
@@ -10,29 +10,30 @@ import { ProductIndex } from "@/components/product-index";
 import { ProductStage } from "@/components/product-stage";
 
 /**
- * The Farmhouse Collection × Bobby Deol, top to bottom:
- *  1. HeroPortal         pencil drawing draws itself → develops into the photo →
- *                        camera pushes through the pergola into Bobby
+ * Live the Carysil Life: The Farmhouse Collection × Bobby Deol, top to bottom.
+ * The manifesto comes second, then the products:
+ *  1. Hero               Bobby full bleed; the photo settles, the lockup signs itself,
+ *                        the copy rises; on scroll the photo sinks and the copy lifts
  *  2. Manifesto          words come into focus; rounded photo opens; outlined band slides
- *  3. HostBanners        Ode-style banners open from the bottom; the host copy
- *  4. ProductStage       pinned dark stage: six pieces with glow, rings and callouts
- *  5. DayGallery         pinned sideways strip, first coffee to last light
- *  6. LightSwitcher      one kitchen in four lights, each opening out of a circle
- *  7. BbqBlueprint       Barbeque Station on a drafting grid; dimensions draw, figures count
- *  8. ProductIndex       Product List 2027 with MRPs, filtered with GSAP Flip
+ *  3. ProductStage       pinned white stage: six pieces with glow, rings and callouts
+ *  4. ProductIndex       Product List 2027, filtered with GSAP Flip
+ *  5. HostBanners        Ode-style banners open from the bottom; the host copy
+ *  6. DayGallery         pinned sideways strip, first coffee to last light
+ *  7. LightSwitcher      one kitchen in four lights, each opening out of a circle
+ *  8. BbqBlueprint       Barbeque Station on a drafting grid; dimensions draw, figures count
  *  9. ExperienceCentres  the five showrooms on red with the catalogue's zigzag lines
  */
 export default function HomePage() {
   return (
     <div data-page>
-      <HeroPortal />
+      <Hero />
       <Manifesto />
-      <HostBanners />
       <ProductStage />
+      <ProductIndex />
+      <HostBanners />
       <DayGallery />
       <LightSwitcher />
       <BbqBlueprint />
-      <ProductIndex />
       <ExperienceCentres />
       <PageMotion />
     </div>

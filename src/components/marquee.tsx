@@ -38,7 +38,7 @@ export function Marquee({ items = marquee, alt = marqueeAlt }: { items?: readonl
         </div>
       </div>
       {alt && (
-        <div className="bg-ink py-4 text-sand/70 sm:py-6">
+        <div className="bg-cream py-4 text-brass-deep/60 sm:py-6">
           <div data-marquee-track="-1" className="marquee-track reverse text-[clamp(2.4rem,6vw,5.4rem)] leading-none">
             <Row items={alt} outline copy={0} />
             <Row items={alt} outline copy={1} />

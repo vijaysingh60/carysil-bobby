@@ -1,7 +1,7 @@
 /**
  * Copy and product data for the Farmhouse Collection campaign page.
  *
- * Product names, specs and MRPs are taken from the "Bobby D. Catalog" product list
+ * Product names and specs are taken from the "Bobby D. Catalog" product list
  * (2027). Showroom addresses are from the catalogue's back cover. Anything that is
  * campaign writing rather than catalogue fact is marked in the comments.
  */
@@ -20,6 +20,9 @@ export const collection = {
 export const manifesto =
   "Inspired by the *farmhouse* kitchen. Stone underfoot, *fire* on the grill, coffee before the guests arrive, and a table that keeps everyone *outside* until late.";
 
+/** Shown in place of the enquiry link on pieces that reach stores in January. */
+export const JANUARY = "Available in January";
+
 export type Callout = { title: string; body: string };
 
 export type StageProduct = {
@@ -27,11 +30,12 @@ export type StageProduct = {
   name: string;
   type: string;
   line: string;
-  mrp: string;
   image: StaticImageData;
   /** Product image height on the stage, as a share of the stage height. */
   scale: number;
   callouts: readonly Callout[];
+  /** Set for pieces not in stores yet (e.g. "Available in January"). */
+  available?: string;
 };
 
 /** The pinned product stage. Specs as printed in the catalogue. */
@@ -41,7 +45,6 @@ export const stage: readonly StageProduct[] = [
     name: "Magic 6-in-1 Faucet",
     type: "Kitchen faucet",
     line: "One faucet. Six functions.",
-    mrp: "₹ 1,49,000",
     image: productImages.faucet,
     scale: 0.5,
     callouts: [
@@ -58,7 +61,6 @@ export const stage: readonly StageProduct[] = [
     name: "Retro A100",
     type: "Farmhouse granite kitchen sink",
     line: "A deep single bowl in black granite.",
-    mrp: "₹ 24,900",
     image: productImages.sink,
     scale: 0.32,
     callouts: [
@@ -72,7 +74,6 @@ export const stage: readonly StageProduct[] = [
     name: "Rustic Classic Oven",
     type: "Built-in electric oven · RO OV EL 60 9F GF",
     line: "Brass rail, analogue dials, built into the stone.",
-    mrp: "₹ 99,900",
     image: productImages.oven,
     scale: 0.46,
     callouts: [
@@ -86,8 +87,8 @@ export const stage: readonly StageProduct[] = [
     name: "Piccola",
     type: "Semi-professional coffee machine",
     line: "A professional lever group for the farmhouse counter.",
-    mrp: "₹ 1,65,000",
     image: productImages.piccola,
+    available: JANUARY,
     scale: 0.48,
     callouts: [
       { title: "1 group", body: "Single-group configuration." },
@@ -103,7 +104,6 @@ export const stage: readonly StageProduct[] = [
     name: "CW 77",
     type: "Wine chiller",
     line: "Seven wooden shelves, kept at cellar temperature.",
-    mrp: "₹ 1,53,290",
     image: productImages.wineChiller,
     scale: 0.5,
     callouts: [
@@ -116,8 +116,8 @@ export const stage: readonly StageProduct[] = [
     name: "Barbeque Station",
     type: "Stainless steel outdoor kitchen",
     line: "Grill, plancha, sink and fridge in one run of steel.",
-    mrp: "₹ 6,90,000",
     image: productImages.bbqStation,
+    available: JANUARY,
     scale: 0.26,
     callouts: [
       { title: "27.3 kW", body: "Rated heat output." },
@@ -165,29 +165,29 @@ export const bbq = {
     { title: "Three-layer drawer", body: "Keeps the essentials within reach.", image: productImages.bbqDrawers },
   ],
   notes: ["Four SUS304 stainless steel cooking grids", "Integrated sink, faucet, refrigerator and illuminated controls"],
-  mrp: "₹ 6,90,000",
 } as const;
 
 export type IndexProduct = {
   id: string;
   name: string;
   type: string;
-  mrp: string;
   group: "kitchen" | "drinks" | "outdoor";
   image: StaticImageData;
   /** Photo rather than a cut-out: fills the card instead of sitting on it. */
   photo?: boolean;
+  /** Set for pieces not in stores yet (e.g. "Available in January"). */
+  available?: string;
 };
 
-/** Product List 2027: every product in the catalogue, with its MRP. */
+/** Product List 2027: every product in the catalogue. */
 export const productList: readonly IndexProduct[] = [
-  { id: "faucet", name: "Magic 6-in-1 Faucet", type: "Kitchen faucet", mrp: "₹ 1,49,000", group: "kitchen", image: productImages.faucet },
-  { id: "sink", name: "Retro A100", type: "Farmhouse granite sink", mrp: "₹ 24,900", group: "kitchen", image: productImages.sink },
-  { id: "oven", name: "RO OV EL 60 9F GF", type: "Rustic classic electric oven", mrp: "₹ 99,900", group: "kitchen", image: productImages.oven },
-  { id: "piccola", name: "Piccola", type: "Semi-professional coffee machine", mrp: "₹ 1,65,000", group: "drinks", image: productImages.piccola },
-  { id: "chiller", name: "CW 77", type: "Wine chiller", mrp: "₹ 1,53,290", group: "drinks", image: productImages.wineChiller },
-  { id: "grill", name: "Built-in Grill, 4 Burner", type: "4 × 2.93 kW main burners", mrp: "₹ 99,900", group: "outdoor", image: productImages.grillControls, photo: true },
-  { id: "bbq", name: "Barbeque Station", type: "Grill, plancha, sink and fridge", mrp: "₹ 6,90,000", group: "outdoor", image: productImages.bbqStation },
+  { id: "faucet", name: "Magic 6-in-1 Faucet", type: "Kitchen faucet", group: "kitchen", image: productImages.faucet },
+  { id: "sink", name: "Retro A100", type: "Farmhouse granite sink", group: "kitchen", image: productImages.sink },
+  { id: "oven", name: "RO OV EL 60 9F GF", type: "Rustic classic electric oven", group: "kitchen", image: productImages.oven },
+  { id: "piccola", name: "Piccola", type: "Semi-professional coffee machine", group: "drinks", image: productImages.piccola, available: JANUARY },
+  { id: "chiller", name: "CW 77", type: "Wine chiller", group: "drinks", image: productImages.wineChiller },
+  { id: "grill", name: "Built-in Grill, 4 Burner", type: "4 × 2.93 kW main burners", group: "outdoor", image: productImages.grillControls, photo: true, available: JANUARY },
+  { id: "bbq", name: "Barbeque Station", type: "Grill, plancha, sink and fridge", group: "outdoor", image: productImages.bbqStation, available: JANUARY },
 ];
 
 export const productGroups = [

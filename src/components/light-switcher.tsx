@@ -76,14 +76,14 @@ export function LightSwitcher() {
   };
 
   return (
-    <section ref={root} id="lights" aria-label="One kitchen, four lights" className="relative overflow-hidden bg-ink text-bone">
+    <section ref={root} id="lights" aria-label="One kitchen, four lights" className="relative overflow-hidden bg-linen text-graphite">
       <div className="mx-auto grid max-w-7xl items-center gap-12 px-4 py-28 sm:px-6 lg:grid-cols-[0.8fr_1.6fr] lg:gap-16 lg:px-10 lg:py-36">
         <div>
-          <p className="kicker text-stone">Four lights</p>
-          <h2 data-split className="mt-6 text-[clamp(2.2rem,4.4vw,4rem)] leading-[1.02] font-light tracking-[-0.015em] text-cream">
-            One kitchen. <span className="text-cream/40">Four lights.</span>
+          <p className="kicker kicker-light text-graphite-soft">Four lights</p>
+          <h2 data-split className="mt-6 text-[clamp(2.2rem,4.4vw,4rem)] leading-[1.02] font-light tracking-[-0.015em] text-graphite">
+            One kitchen. <span className="text-graphite/35">Four lights.</span>
           </h2>
-          <p data-reveal className="mt-6 max-w-sm leading-relaxed text-sand/80">
+          <p data-reveal className="mt-6 max-w-sm leading-relaxed text-graphite-soft">
             The same stone, steel and timber from golden hour to the last lantern. Pick a light.
           </p>
           <div role="group" aria-label="Choose the light" className="mt-10 flex flex-wrap gap-2 lg:flex-col lg:items-start lg:gap-3">
@@ -94,12 +94,12 @@ export function LightSwitcher() {
                 aria-pressed={active === i}
                 onClick={() => pick(i)}
                 className={`group flex items-center gap-3 rounded-full border px-4 py-2.5 text-sm transition-colors duration-500 ${
-                  active === i ? "border-brass bg-brass/10 text-cream" : "border-cream/15 text-sand/70 hover:border-cream/40 hover:text-cream"
+                  active === i ? "border-red bg-white text-graphite" : "border-graphite/15 text-graphite-soft hover:border-graphite/40 hover:text-graphite"
                 }`}
               >
                 <span
                   aria-hidden="true"
-                  className={`relative size-3 rounded-full border transition-colors duration-500 ${active === i ? "border-brass bg-brass" : "border-cream/40"}`}
+                  className={`relative size-3 rounded-full border transition-colors duration-500 ${active === i ? "border-red bg-red" : "border-graphite/35"}`}
                 />
                 {l.label}
               </button>
@@ -108,7 +108,7 @@ export function LightSwitcher() {
         </div>
 
         <div>
-          <div data-light-frame className="relative aspect-[3/2] overflow-hidden rounded-[10px] bg-char">
+          <div data-light-frame className="relative aspect-[3/2] overflow-hidden rounded-[10px] bg-paper">
             {lights.map((l, i) => (
               <div
                 key={l.id}
@@ -130,12 +130,11 @@ export function LightSwitcher() {
                 </div>
               </div>
             ))}
-            <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-1/3 bg-gradient-to-t from-ink/70 to-transparent" />
-            <p aria-live="polite" className="absolute bottom-5 left-5 z-10 text-[0.95rem] text-cream sm:bottom-7 sm:left-7">
-              <span className="eyebrow mr-3 text-[0.6rem] text-brass">{lights[active].label}</span>
-              {lights[active].line}
-            </p>
           </div>
+          <p aria-live="polite" className="mt-4 text-[0.95rem] text-graphite">
+            <span className="eyebrow mr-3 text-[0.6rem] text-red">{lights[active].label}</span>
+            {lights[active].line}
+          </p>
         </div>
       </div>
     </section>

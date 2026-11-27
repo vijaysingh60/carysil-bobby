@@ -6,27 +6,27 @@ import { submitEnquiry, type EnquiryState } from "@/app/promo/actions";
 const initial: EnquiryState = { status: "idle" };
 
 const field =
-  "mt-2 w-full rounded-none border bg-ink/40 px-4 py-3.5 text-base text-bone placeholder:text-stone/80 transition-colors focus:border-red-bright focus:outline-none";
+  "mt-2 w-full rounded-none border bg-white px-4 py-3.5 text-base text-graphite placeholder:text-graphite-soft/70 transition-colors focus:border-red focus:outline-none";
 
 export function EnquiryForm() {
   const [state, action, pending] = useActionState(submitEnquiry, initial);
 
   if (state.status === "ok") {
     return (
-      <div role="status" className="rounded-none border border-red/70 bg-red/20 p-8">
-        <p className="eyebrow text-red-bright">Request received</p>
-        <p className="font-display mt-3 text-3xl leading-tight font-light text-bone">{state.message}</p>
+      <div role="status" className="rounded-none border border-red/40 bg-red/5 p-8">
+        <p className="eyebrow text-red">Request received</p>
+        <p className="font-display mt-3 text-3xl leading-tight font-light text-graphite">{state.message}</p>
       </div>
     );
   }
 
   const err = state.errors ?? {};
   const v = state.values ?? {};
-  const border = (k: keyof typeof err) => (err[k] ? "border-red-400/80" : "border-line");
+  const border = (k: keyof typeof err) => (err[k] ? "border-red" : "border-graphite/20");
 
   return (
     <form action={action} noValidate className="grid gap-5 sm:grid-cols-2">
-      <label className="block text-sm text-sand sm:col-span-2">
+      <label className="block text-sm text-graphite sm:col-span-2">
         Full name
         <input
           name="name"
@@ -37,10 +37,10 @@ export function EnquiryForm() {
           aria-describedby={err.name ? "name-error" : undefined}
           className={`${field} ${border("name")}`}
         />
-        {err.name && <span id="name-error" className="mt-1.5 block text-xs text-red-300">{err.name}</span>}
+        {err.name && <span id="name-error" className="mt-1.5 block text-xs text-red">{err.name}</span>}
       </label>
 
-      <label className="block text-sm text-sand">
+      <label className="block text-sm text-graphite">
         Phone
         <input
           name="phone"
@@ -53,11 +53,11 @@ export function EnquiryForm() {
           aria-describedby={err.phone ? "phone-error" : undefined}
           className={`${field} ${border("phone")}`}
         />
-        {err.phone && <span id="phone-error" className="mt-1.5 block text-xs text-red-300">{err.phone}</span>}
+        {err.phone && <span id="phone-error" className="mt-1.5 block text-xs text-red">{err.phone}</span>}
       </label>
 
-      <label className="block text-sm text-sand">
-        Email <span className="text-stone">(optional)</span>
+      <label className="block text-sm text-graphite">
+        Email <span className="text-graphite-soft">(optional)</span>
         <input
           name="email"
           type="email"
@@ -67,10 +67,10 @@ export function EnquiryForm() {
           aria-describedby={err.email ? "email-error" : undefined}
           className={`${field} ${border("email")}`}
         />
-        {err.email && <span id="email-error" className="mt-1.5 block text-xs text-red-300">{err.email}</span>}
+        {err.email && <span id="email-error" className="mt-1.5 block text-xs text-red">{err.email}</span>}
       </label>
 
-      <label className="block text-sm text-sand">
+      <label className="block text-sm text-graphite">
         City
         <input
           name="city"
@@ -81,12 +81,12 @@ export function EnquiryForm() {
           aria-describedby={err.city ? "city-error" : undefined}
           className={`${field} ${border("city")}`}
         />
-        {err.city && <span id="city-error" className="mt-1.5 block text-xs text-red-300">{err.city}</span>}
+        {err.city && <span id="city-error" className="mt-1.5 block text-xs text-red">{err.city}</span>}
       </label>
 
-      <label className="block text-sm text-sand">
+      <label className="block text-sm text-graphite">
         Your space
-        <select name="space" defaultValue={v.space ?? "Garden"} className={`${field} border-line`}>
+        <select name="space" defaultValue={v.space ?? "Garden"} className={`${field} border-graphite/20`}>
           <option>Garden</option>
           <option>Terrace</option>
           <option>Balcony</option>
@@ -112,9 +112,9 @@ export function EnquiryForm() {
           {pending ? "Sending…" : "Book my design visit"}
         </button>
         {state.status === "error" ? (
-          <p role="alert" className="text-sm text-red-300">{state.message}</p>
+          <p role="alert" className="text-sm text-red">{state.message}</p>
         ) : (
-          <p className="text-xs text-stone">We only use these details to arrange your visit.</p>
+          <p className="text-xs text-graphite-soft">We only use these details to arrange your visit.</p>
         )}
       </div>
     </form>

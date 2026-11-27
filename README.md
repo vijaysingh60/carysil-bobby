@@ -7,7 +7,7 @@ Built with Next.js 16 (App Router, Turbopack), React 19, Tailwind CSS 4, GSAP 3 
 
 | Route    | What it is                                                                                                   |
 | -------- | ------------------------------------------------------------------------------------------------------------ |
-| `/`      | Louvre-opening pergola hero, manifesto, the host, pinned product stage, a day at the farmhouse, four lights, Barbeque Station drawing, product list 2027, experience centres |
+| `/`      | Bobby hero, manifesto, pinned product stage, product list 2027, the host, a day at the farmhouse, four lights, Barbeque Station drawing, experience centres |
 | `/promo` | Launch offer: countdown, perks, Bobby feature, four moods (pinned sideways scroll on desktop), booking form, terms |
 
 ## Brand
@@ -16,11 +16,12 @@ Built with Next.js 16 (App Router, Turbopack), React 19, Tailwind CSS 4, GSAP 3 
   paths in [`src/lib/campaign-logo-paths.ts`](src/lib/campaign-logo-paths.ts) and drawn by
   [`campaign-logo.tsx`](src/components/campaign-logo.tsx) in the PDF's variants (light, dark, white). The script
   words and each wordmark letter are separate paths, which is how the intro, header and footer animate it.
-- **Colour:** the lockup red `#890606`, warm black `#0f0d0b`, an Ode-to-Germany paper `#f1ebe2`, and brass `#c9a66b`
-  taken from the Magic faucet.
+- **Colour:** a daytime palette: white and beige surfaces (cream `#f7f3ec`, Ode-to-Germany paper `#f1ebe2`, linen
+  `#e6ddcf`), graphite type, the lockup red `#890606` as the accent and brass from the Magic faucet. No black surfaces.
+- **Main line:** "Live the Carysil Life". The Farmhouse Collection × Bobby Deol sits under it as the smaller line.
 - **Type:** Archivo and Barlow as on carysil.com. Headings are Barlow light in caps (`.title`), standing in for the
   DIN headings on sternhagen.com.
-- **References:** sternhagen.com (the arch the hero camera pushes through), its Shü page (blurred words coming into
+- **References:** sternhagen.com, its Shü page (blurred words coming into
   focus, the glowing product stage with callouts, the pinned gallery, the finish switcher, the technical drawing) and
   "An Ode to Germany" (letter-by-letter titles, banners opening from the bottom, the filterable product grid).
 
@@ -30,15 +31,15 @@ Homepage sections, top to bottom:
 
 | Section | Effect | File |
 | ------- | ------ | ---- |
-| Intro | On warm black the lockup signs itself: "Live The" writes on, CARYSIL rises letter by letter, "life" signs off, then the sheet lifts (first view per session, pure CSS) | `intro-signature.tsx`, `.sig` |
-| Hero | Timber louvres swing open on the kitchen, which settles from a slight zoom while the title rises letter by letter (CSS transforms only); scrolling lifts the title, dims the kitchen and pushes the camera through the pergola's opening into Bobby, then the lockup lands | `hero-portal.tsx`, `.hp-louvre` |
+| Intro | On a white sheet the lockup signs itself: "Live The" writes on, CARYSIL rises letter by letter, "life" signs off, then the sheet lifts (first view per session, pure CSS) | `intro-signature.tsx`, `.sig` |
+| Hero | Bobby full bleed: after the intro the photo settles from a slight zoom, the "Live The CARYSIL life" lockup signs itself and the copy rises; on scroll the photo sinks and the copy lifts away | `hero.tsx`, `.hero-sign`, `page-motion.tsx` |
 | Manifesto | Words come into focus out of a blur; a rounded photo opens; an outlined word band slides with the scroll | `manifesto.tsx` |
+| The collection | Pinned white stage: six products hand over with a glow, turning rings, names rising out of a mask and callouts drawn toward the product | `product-stage.tsx` |
+| Product list 2027 | Cards rise in; filters reflow the grid with GSAP Flip; Piccola, grill and Barbeque Station carry an "Available in January" badge | `product-index.tsx` |
 | The host | Three banners open from the bottom in a stagger and drift at different speeds | `host-banners.tsx` |
-| The collection | Pinned dark stage: six products hand over with a glow, turning rings, names rising out of a mask and callouts drawn toward the product | `product-stage.tsx` |
 | A day at the farmhouse | Desktop: pinned sideways strip, photos drifting in their frames. Touch: swipe strip | `day-gallery.tsx` |
 | Four lights | The same kitchen in four lights; each opens out of a circle; plays through until someone picks one | `light-switcher.tsx` |
 | Barbeque Station | On a drafting grid: the station slides on, dimension lines draw, the figures count up | `bbq-blueprint.tsx` |
-| Product list 2027 | Cards rise in; filters reflow the grid with GSAP Flip | `product-index.tsx` |
 | Experience centres | On red with the catalogue's zigzag lines drifting; each city opens to its address | `experience-centres.tsx` |
 | Footer | The full-width lockup signs itself on scroll | `footer-lockup.tsx` |
 
@@ -69,8 +70,8 @@ Open http://localhost:3000. `npm run build` makes a production build; both pages
 ## Editing copy
 
 - [`src/lib/campaign.ts`](src/lib/campaign.ts): the collection name, manifesto, the six stage products (name, type,
-  line, MRP, callouts, image size), the day gallery, the four lights, the Barbeque Station figures, Product List 2027
-  (with filters) and the experience-centre addresses. Specs, MRPs and addresses are from the "Bobby D. Catalog" PDF.
+  line, callouts, image size, `available` for pieces not in stores yet — `JANUARY`), the day gallery, the four lights, the Barbeque Station figures, Product List 2027
+  (with filters) and the experience-centre addresses. Specs and addresses are from the "Bobby D. Catalog" PDF. Prices are deliberately not shown.
 - [`src/lib/site.ts`](src/lib/site.ts): brand, campaign line, ambassador, contact details, site URL, navigation, the
   promo marquee, and the launch `offer` (end date drives the countdown; perks and terms).
 
@@ -90,13 +91,11 @@ Sources are in `new images/` (the Farmhouse shoot as 8256 px WebP, the four kitc
 logo PDF). That folder is about 205 MB and is not referenced by the build; keep it out of git or move it to shared
 storage.
 
-- `src/assets/farmhouse/`: the shoot resized to 2400 px WebP (2880–3000 px for the two hero frames, which the camera
-  zooms into).
+- `src/assets/farmhouse/`: the shoot resized to 2400 px WebP (2880 px for the hero photo of Bobby).
 - `src/assets/products/`: product cut-outs and detail shots lifted from the catalogue PDF (transparent WebP).
 
 All of them are imported statically in [`src/lib/media.ts`](src/lib/media.ts), so `next/image` knows their size,
-makes blur placeholders and serves resized AVIF/WebP. The hero measures the pergola's opening as a fraction of the
-kitchen photo (`OPENING` in `hero-portal.tsx`); if the photo is swapped, re-measure it.
+makes blur placeholders and serves resized AVIF/WebP.
 
 ## Project layout
 
@@ -109,7 +108,7 @@ src/
     promo/actions.ts   booking form server action
     sitemap.ts, robots.ts
   components/          one file per section (see Motion above), plus header, footer, countdown, form
-  lib/campaign.ts      collection copy, products, specs, MRPs, showrooms
+  lib/campaign.ts      collection copy, products, specs, showrooms
   lib/site.ts          brand, nav, contact and offer settings
   lib/campaign-logo-paths.ts  the traced "Live The CARYSIL life" lockup
   lib/use-scene.ts     GSAP matchMedia wrapper every scroll scene runs through

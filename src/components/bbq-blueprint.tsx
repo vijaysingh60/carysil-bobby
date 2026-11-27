@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRef } from "react";
 import gsap from "gsap";
-import { bbq } from "@/lib/campaign";
+import { bbq, JANUARY } from "@/lib/campaign";
 import { products } from "@/lib/media";
 import { $, $$, useScene } from "@/lib/use-scene";
 
@@ -59,9 +59,10 @@ export function BbqBlueprint() {
               A stainless steel outdoor kitchen with grill, plancha, sink and beverage refrigerator in one run.
             </p>
           </div>
-          <p data-reveal className="text-right">
-            <span className="eyebrow block text-[0.6rem] text-graphite-soft">MRP</span>
-            <span className="mt-1 block text-2xl font-light">{bbq.mrp}</span>
+          <p data-reveal>
+            <span className="inline-block rounded-full bg-red px-3.5 py-1.5 text-[0.72rem] font-medium tracking-[0.06em] text-cream">
+              {JANUARY}
+            </span>
           </p>
         </div>
 

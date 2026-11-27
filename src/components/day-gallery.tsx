@@ -53,7 +53,7 @@ export function DayGallery() {
       ref={root}
       id="day"
       aria-label="A day at the farmhouse"
-      className="scene-lg relative bg-paper text-graphite"
+      className="scene-lg relative bg-white text-graphite"
       style={{ "--scene-length": "300svh" } as CSSProperties}
     >
       <div className="scene-lg-stage flex flex-col justify-center py-24 lg:py-0">
@@ -93,7 +93,7 @@ export function DayGallery() {
                     style={{ objectPosition: scene.focus }}
                   />
                 </div>
-                <span className="absolute top-4 left-4 rounded-full bg-ink/55 px-3 py-1.5 text-[0.72rem] tracking-[0.12em] text-cream tabular-nums backdrop-blur">
+                <span className="absolute top-4 left-4 rounded-full bg-white/85 px-3 py-1.5 text-[0.72rem] tracking-[0.12em] text-graphite tabular-nums backdrop-blur">
                   {scene.time}
                 </span>
               </div>

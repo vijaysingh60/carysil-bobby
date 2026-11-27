@@ -18,7 +18,7 @@ export function FooterLockup() {
 
   return (
     <div ref={root} className="px-4 sm:px-6 lg:px-10">
-      <CampaignLogo variant="dark" className="mx-auto w-full max-w-[110rem]" />
+      <CampaignLogo variant="light" className="mx-auto w-full max-w-[110rem]" />
     </div>
   );
 }
